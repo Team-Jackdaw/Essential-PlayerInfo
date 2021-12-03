@@ -6,7 +6,9 @@ import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.wdrshadow.essentialinfo.EssentialInfo;
-import org.slf4j.Logger;
+import com.velocitypowered.api.proxy.server.QueryResponse;
+
+import java.util.Collection;
 
 public class Message {
     // 服务器类
@@ -27,7 +29,14 @@ public class Message {
 
     // 玩家消息广播
     public void broadcast(Player player, String message){
-        // do something here
+        // 获取除本人外的在线玩家列表
+        Collection<Player> players = proxyServer.getAllPlayers();
+        players.remove(player);
+        // 向玩家列表中的玩家发送消息
+        for(Player p: players){
+            p.spoofChatInput("["+player.getUsername()+"]:"+ message);
+        }
+
     }
 }
 
