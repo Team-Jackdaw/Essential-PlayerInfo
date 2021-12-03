@@ -8,6 +8,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
 import net.kyori.adventure.text.Component;
+import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,10 +16,12 @@ import java.util.UUID;
 public class TabList {
     // class server
     private final ProxyServer proxyServer;
+    private final Logger logger;
 
     // connect the module to the plugin and server
-    public TabList(EssentialInfo plugin, ProxyServer proxyServer) {
+    public TabList(ProxyServer proxyServer, Logger logger) {
         this.proxyServer = proxyServer;
+        this.logger = logger;
     }
 
     // listener of player login

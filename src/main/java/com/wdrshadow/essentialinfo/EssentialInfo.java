@@ -35,17 +35,13 @@ public class EssentialInfo {
     Path dataDirectory;
 
     // get config
-    @Inject
     private Setting setting;
 
     // tabList module
-    @Inject
     private TabList tabList;
     // message module
-    @Inject
     private Message message;
     // PingList module
-    @Inject
     private PingList pingList;
 
 
@@ -62,12 +58,12 @@ public class EssentialInfo {
         this.setting = new Setting(dataDirectory.toFile());
 
         if (setting.isTabListEnabled()) {
-            this.tabList = new TabList(this, this.proxyServer);
+            this.tabList = new TabList(this.proxyServer, this.logger);
             this.proxyServer.getEventManager().register(this, this.tabList);
         }
 
         if (setting.isMessageEnabled()) {
-            this.message = new Message(this, this.proxyServer);
+            this.message = new Message(this.proxyServer, this.logger);
             this.proxyServer.getEventManager().register(this, this.message);
         }
 
