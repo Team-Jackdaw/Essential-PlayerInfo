@@ -1,0 +1,13 @@
+# essential-playerinfo
+# Global tablist
+[tabList]
+    enabled=true
+
+# Global massage
+[message]
+    enabled=true
+
+# Ping List
+[pingList]
+    enabled=true
+
