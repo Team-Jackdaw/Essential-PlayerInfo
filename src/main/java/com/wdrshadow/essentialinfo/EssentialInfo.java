@@ -14,7 +14,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import java.nio.file.Path;
 
-// 注册插件
+// register the plugin
 @Plugin(
         id = "essential-info",
         name = "Essential Info",
@@ -23,40 +23,40 @@ import java.nio.file.Path;
 )
 public class EssentialInfo {
 
-    // 服务器类以及日志接口
+    // generate class server and logger
     @Inject
     private ProxyServer proxyServer;
     @Inject
     private Logger logger;
 
-    // 插件目录
+    // path of the plugin
     @Inject
     private @DataDirectory
     Path dataDirectory;
 
-    // 获取设置
+    // get config
     @Inject
     private Setting setting;
 
-    // tabList模块
+    // tabList module
     @Inject
     private TabList tabList;
-    // 消息模块
+    // message module
     @Inject
     private Message message;
-    // PingList模块
+    // PingList module
     @Inject
     private PingList pingList;
 
 
-    // 构造函数，链接服务器与日志
+    // connect to the server and logger
     @Inject
     public EssentialInfo(ProxyServer proxyServer, Logger logger){
         this.proxyServer = proxyServer;
         this.logger = logger;
     }
 
-    // 注册事件侦听器
+    // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.setting = new Setting(dataDirectory.toFile());

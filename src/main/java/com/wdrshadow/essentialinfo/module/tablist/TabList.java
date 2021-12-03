@@ -13,27 +13,27 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class TabList {
-    // 服务器类
-    private ProxyServer proxyServer;
+    // class server
+    private final ProxyServer proxyServer;
 
-    // 构造函数，链接服务器类与插件
+    // connect the module to the plugin and server
     public TabList(EssentialInfo plugin, ProxyServer proxyServer) {
         this.proxyServer = proxyServer;
     }
 
-    // 玩家加入事件监听器
+    // listener of player login
     @Subscribe
     public void connect(ServerConnectedEvent event) {
         update();
     }
 
-    // 玩家退出事件监听器
+    // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
         update();
     }
 
-    // 更新tab列表
+    // update tab list
     public void update() {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {

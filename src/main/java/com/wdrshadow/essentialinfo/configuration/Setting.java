@@ -15,7 +15,7 @@ public class Setting {
     private boolean messageEnabled;
     private boolean pingListEnabled;
 
-    private Toml toml;
+    private final Toml toml;
 
     public Setting(File dataFolder){
         this.dataFolder = dataFolder;
@@ -37,6 +37,7 @@ public class Setting {
         if (file.exists()) return;
 
         try (InputStream in = Setting.class.getResourceAsStream("/config.toml")) {
+            assert in != null;
             Files.copy(in, file.toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);

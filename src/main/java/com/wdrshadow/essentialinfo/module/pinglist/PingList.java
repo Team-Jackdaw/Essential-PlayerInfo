@@ -8,15 +8,15 @@ import com.wdrshadow.essentialinfo.EssentialInfo;
 import org.slf4j.Logger;
 
 public class PingList {
-    // 服务器类
-    private ProxyServer proxyServer;
+    // class server
+    private final ProxyServer proxyServer;
 
-    // 构造函数，链接服务器类与插件
+    // connect the module to the plugin and server
     public PingList(EssentialInfo plugin, ProxyServer proxyServer) {
         this.proxyServer = proxyServer;
     }
 
-    // Ping事件侦测器、行为触发
+    // listener of player ping
     @Subscribe
     public void onPing(ProxyPingEvent event) {
         ServerPing response = event.getPing();
