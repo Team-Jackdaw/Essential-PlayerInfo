@@ -1,16 +1,16 @@
 package com.wdrshadow.essentialinfo;
 
 import com.google.inject.Inject;
-import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
+import com.velocitypowered.api.proxy.ProxyServer;
+import com.wdrshadow.essentialinfo.configuration.Setting;
 import com.wdrshadow.essentialinfo.module.message.Message;
 import com.wdrshadow.essentialinfo.module.pinglist.PingList;
 import com.wdrshadow.essentialinfo.module.tablist.TabList;
 import org.slf4j.Logger;
-import com.wdrshadow.essentialinfo.configuration.Setting;
-import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import com.velocitypowered.api.proxy.ProxyServer;
 
 import java.nio.file.Path;
 
@@ -51,17 +51,17 @@ public class EssentialInfo {
 
         if (setting.isTabListEnabled()) {
             this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this));
-            logger.info("TabList Loaded.");
+            logger.info("Loaded TabList.");
         }
 
         if (setting.isMessageEnabled()) {
             this.proxyServer.getEventManager().register(this, new Message(this.proxyServer));
-            logger.info("Message Loaded!");
+            logger.info("Loaded Message.");
         }
 
         if (setting.isPingListEnabled()) {
             this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
-            logger.info("PingList Loaded!");
+            logger.info("Loaded PingList.");
         }
     }
     }

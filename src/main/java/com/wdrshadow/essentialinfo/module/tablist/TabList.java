@@ -9,8 +9,6 @@ import com.velocitypowered.api.proxy.player.TabListEntry;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
 
-import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class TabList {
@@ -33,11 +31,11 @@ public class TabList {
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
-        update();
+        remove(event.getPlayer());
     }
 
     // update tab list
-    public void update() {
+    private void update() {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
                 if (!player.getTabList().containsEntry(player1.getUniqueId())) {
@@ -50,16 +48,14 @@ public class TabList {
                             .build());
                 }
             }
+        }
+    }
 
-            for (TabListEntry entry : player.getTabList().getEntries()) {
-                UUID uuid = entry.getProfile().getId();
-                Optional<Player> playerOptional = proxyServer.getPlayer(uuid);
-                if (playerOptional.isPresent()) {
-                    // Update ping
-                    entry.setLatency((int) (player.getPing() * 1000));
-                } else {
-                    player.getTabList().removeEntry(uuid);
-                }
+    // remove disconnected player from list
+    private void remove(Player player) {
+        for (Player p : this.proxyServer.getAllPlayers()) {
+            if (p.getTabList().containsEntry(player.getUniqueId())) {
+                p.getTabList().removeEntry(player.getUniqueId());
             }
         }
     }
