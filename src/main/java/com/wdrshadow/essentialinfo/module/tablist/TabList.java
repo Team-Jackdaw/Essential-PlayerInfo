@@ -1,29 +1,27 @@
 package com.wdrshadow.essentialinfo.module.tablist;
 
-import com.google.inject.Inject;
-import com.wdrshadow.essentialinfo.EssentialInfo;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
+import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
-import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TabList {
     // class server
     private final ProxyServer proxyServer;
-    private final Logger logger;
 
     // connect the module to the plugin and server
-    @Inject
-    public TabList(ProxyServer proxyServer, Logger logger) {
+    public TabList(ProxyServer proxyServer, EssentialInfo plugin) {
         this.proxyServer = proxyServer;
-        this.logger = logger;
+        this.proxyServer.getScheduler().buildTask(plugin, this::update)
+                .repeat(50L, TimeUnit.MILLISECONDS).schedule();
     }
 
     // listener of player login
@@ -43,15 +41,13 @@ public class TabList {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
                 if (!player.getTabList().containsEntry(player1.getUniqueId())) {
-                    player.getTabList().addEntry(
-                            TabListEntry.builder()
-                                    .displayName(Component.text(player1.getUsername()))
-                                    .profile(player1.getGameProfile())
-                                    .gameMode(0) // Impossible to get player game mode from proxy, always assume survival
-                                    .tabList(player.getTabList())
-                                    .build()
-                    );
-                    logger.info("added one");
+                    player.getTabList().addEntry(TabListEntry.builder()
+                            .displayName(Component.text(player1.getUsername()))
+                            .latency((int) player1.getPing())
+                            .profile(player1.getGameProfile())
+                            .gameMode(0)
+                            .tabList(player.getTabList())
+                            .build());
                 }
             }
 
@@ -61,10 +57,8 @@ public class TabList {
                 if (playerOptional.isPresent()) {
                     // Update ping
                     entry.setLatency((int) (player.getPing() * 1000));
-                    logger.info("updated one");
                 } else {
                     player.getTabList().removeEntry(uuid);
-                    logger.info("remove one");
                 }
             }
         }

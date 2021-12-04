@@ -5,19 +5,15 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerPing;
-import com.wdrshadow.essentialinfo.EssentialInfo;
-import org.slf4j.Logger;
 
 public class PingList {
     // class server
     private final ProxyServer proxyServer;
-    private final Logger logger;
 
     // connect the module to the plugin and server
     @Inject
-    public PingList(ProxyServer proxyServer, Logger logger) {
+    public PingList(ProxyServer proxyServer) {
         this.proxyServer = proxyServer;
-        this.logger = logger;
     }
 
     // listener of player ping

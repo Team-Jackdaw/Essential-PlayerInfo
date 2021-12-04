@@ -11,11 +11,9 @@ public class Setting {
     private final File dataFolder;
     private final File file;
 
-    private boolean tabListEnabled;
-    private boolean messageEnabled;
-    private boolean pingListEnabled;
-
-    private final Toml toml;
+    private final boolean tabListEnabled;
+    private final boolean messageEnabled;
+    private final boolean pingListEnabled;
 
     public Setting(File dataFolder){
         this.dataFolder = dataFolder;
@@ -27,9 +25,6 @@ public class Setting {
         this.tabListEnabled = toml.getBoolean("tabList.enabled");
         this.messageEnabled = toml.getBoolean("message.enabled");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
-
-        this.toml = toml;
-
     }
 
     private void saveDefaultConfig() {
@@ -56,27 +51,12 @@ public class Setting {
         return tabListEnabled;
     }
 
-    public void setTabListEnabled(){
-        this.tabListEnabled = true;
-    }
-
     public boolean isMessageEnabled(){
         return messageEnabled;
-    }
-
-    public void setMessageEnabled(){
-        this.messageEnabled = true;
     }
 
     public boolean isPingListEnabled(){
         return pingListEnabled;
     }
 
-    public void setPingListEnabled(){
-        this.pingListEnabled = true;
-    }
-
-    public Toml getToml() {
-        return toml;
-    }
 }

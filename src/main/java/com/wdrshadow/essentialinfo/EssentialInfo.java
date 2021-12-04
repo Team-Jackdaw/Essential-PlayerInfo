@@ -23,7 +23,7 @@ import java.nio.file.Path;
 )
 public class EssentialInfo {
 
-    // generate class server and logger
+    // generate instance server and logger
     @Inject
     private ProxyServer proxyServer;
     @Inject
@@ -36,14 +36,6 @@ public class EssentialInfo {
 
     // get config
     private Setting setting;
-
-    // tabList module
-    private TabList tabList;
-    // message module
-    private Message message;
-    // PingList module
-    private PingList pingList;
-
 
     // connect to the server and logger
     @Inject
@@ -58,20 +50,17 @@ public class EssentialInfo {
         this.setting = new Setting(dataDirectory.toFile());
 
         if (setting.isTabListEnabled()) {
-            this.tabList = new TabList(this.proxyServer, this.logger);
-            this.proxyServer.getEventManager().register(this, this.tabList);
+            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this));
             logger.info("TabList Loaded.");
         }
 
         if (setting.isMessageEnabled()) {
-            this.message = new Message(this.proxyServer, this.logger);
-            this.proxyServer.getEventManager().register(this, this.message);
+            this.proxyServer.getEventManager().register(this, new Message(this.proxyServer));
             logger.info("Message Loaded!");
         }
 
         if (setting.isPingListEnabled()) {
-            this.pingList = new PingList(this.proxyServer, this.logger);
-            this.proxyServer.getEventManager().register(this, this.pingList);
+            this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
             logger.info("PingList Loaded!");
         }
     }

@@ -6,7 +6,6 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import org.slf4j.Logger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 
@@ -16,14 +15,12 @@ import java.util.Objects;
 public class Message {
     // class for Server
     private final ProxyServer proxyServer;
-    private final Logger logger;
     private TextComponent textComponent;
 
     // connect the module to the plugin and server
     @Inject
-    public Message(ProxyServer proxyServer, Logger logger){
+    public Message(ProxyServer proxyServer){
         this.proxyServer = proxyServer;
-        this.logger = logger;
     }
 
     // listener of player chat
