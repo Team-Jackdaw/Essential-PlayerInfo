@@ -2,11 +2,28 @@
 
 ## Feature
 
-Global pingList, 
+Global pingList (work well), 
 
-Global tabList, 
+Global tabList (work well), 
 
-Global chat.
+Global chat (work but need improve).
+
+## Config
+
+    # essential-playerinfo
+    # Global tablist
+    [tabList]
+        enabled=true
+
+    # Global massage
+    [message]
+        enabled=true
+
+    # Ping List
+    [pingList]
+        enabled=true
+
+
 
 ## Build
 
