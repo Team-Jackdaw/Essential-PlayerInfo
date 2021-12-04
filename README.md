@@ -4,9 +4,9 @@
 
 Global pingList (work well), 
 
-Global tabList (work well), 
+Global tabList (break), 
 
-Global chat (work but need improve).
+Global chat (work well).
 
 ## Config
 
