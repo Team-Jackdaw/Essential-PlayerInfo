@@ -7,6 +7,8 @@ import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -15,6 +17,7 @@ public class Message {
     // class for Server
     private final ProxyServer proxyServer;
     private final Logger logger;
+    private TextComponent textComponent;
 
     // connect the module to the plugin and server
     @Inject
@@ -33,14 +36,23 @@ public class Message {
 
     // broadcast the message
     private void broadcast(Player player, String message){
+        // Audience message
+        String sendMessage = "<"+player.getUsername()+"> "+ message;
+        this.textComponent = Component.text(sendMessage);
         // get players on the proxy exclude those who send message
         Collection<Player> players = proxyServer.getAllPlayers();
         // send message to other players
         for(Player p: players){
             if(!Objects.equals(p.getUsername(), player.getUsername())){
-                p.spoofChatInput("<"+player.getUsername()+"> "+ message);
+                String playerSever = player.getCurrentServer().get().getServer().getServerInfo().getName();
+                String pServer = p.getCurrentServer().get().getServer().getServerInfo().getName();
+                if(!Objects.equals(playerSever, pServer)){
+                    p.sendMessage(textComponent);
+                }
             }
         }
     }
 }
+
+
 

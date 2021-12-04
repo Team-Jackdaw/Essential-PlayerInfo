@@ -30,12 +30,14 @@ public class TabList {
     @Subscribe
     public void connect(ServerConnectedEvent event) {
         update();
+        logger.info("con update");
     }
 
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
         update();
+        logger.info("dis update");
     }
 
     // update tab list
@@ -53,6 +55,7 @@ public class TabList {
                     );
                 }
             }
+
             for (TabListEntry entry : player.getTabList().getEntries()) {
                 UUID uuid = entry.getProfile().getId();
                 Optional<Player> playerOptional = proxyServer.getPlayer(uuid);
