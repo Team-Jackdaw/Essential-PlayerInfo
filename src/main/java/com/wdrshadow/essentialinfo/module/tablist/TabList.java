@@ -30,14 +30,12 @@ public class TabList {
     @Subscribe
     public void connect(ServerConnectedEvent event) {
         update();
-        logger.info("con update");
     }
 
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
         update();
-        logger.info("dis update");
     }
 
     // update tab list
@@ -53,6 +51,7 @@ public class TabList {
                                     .tabList(player.getTabList())
                                     .build()
                     );
+                    logger.info("added one");
                 }
             }
 
@@ -62,8 +61,10 @@ public class TabList {
                 if (playerOptional.isPresent()) {
                     // Update ping
                     entry.setLatency((int) (player.getPing() * 1000));
+                    logger.info("updated one");
                 } else {
                     player.getTabList().removeEntry(uuid);
+                    logger.info("remove one");
                 }
             }
         }

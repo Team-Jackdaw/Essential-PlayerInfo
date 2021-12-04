@@ -1,7 +1,7 @@
 # essential-playerinfo
 # Global tablist
 [tabList]
-    enabled=true
+    enabled=false
 
 # Global massage
 [message]
