@@ -1,5 +1,6 @@
 package com.wdrshadow.essentialinfo.module.pinglist;
 
+import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -10,10 +11,13 @@ import org.slf4j.Logger;
 public class PingList {
     // class server
     private final ProxyServer proxyServer;
+    private final Logger logger;
 
     // connect the module to the plugin and server
-    public PingList(EssentialInfo plugin, ProxyServer proxyServer) {
+    @Inject
+    public PingList(ProxyServer proxyServer, Logger logger) {
         this.proxyServer = proxyServer;
+        this.logger = logger;
     }
 
     // listener of player ping

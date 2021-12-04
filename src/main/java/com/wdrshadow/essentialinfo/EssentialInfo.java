@@ -60,16 +60,19 @@ public class EssentialInfo {
         if (setting.isTabListEnabled()) {
             this.tabList = new TabList(this.proxyServer, this.logger);
             this.proxyServer.getEventManager().register(this, this.tabList);
+            logger.info("TabList Loaded.");
         }
 
         if (setting.isMessageEnabled()) {
             this.message = new Message(this.proxyServer, this.logger);
             this.proxyServer.getEventManager().register(this, this.message);
+            logger.info("Message Loaded!");
         }
 
         if (setting.isPingListEnabled()) {
-            this.pingList = new PingList(this, this.proxyServer);
+            this.pingList = new PingList(this.proxyServer, this.logger);
             this.proxyServer.getEventManager().register(this, this.pingList);
+            logger.info("PingList Loaded!");
         }
     }
     }

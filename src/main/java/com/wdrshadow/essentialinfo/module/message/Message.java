@@ -14,10 +14,10 @@ import java.util.Objects;
 public class Message {
     // class for Server
     private final ProxyServer proxyServer;
-    @Inject
     private final Logger logger;
 
     // connect the module to the plugin and server
+    @Inject
     public Message(ProxyServer proxyServer, Logger logger){
         this.proxyServer = proxyServer;
         this.logger = logger;
@@ -32,21 +32,15 @@ public class Message {
     }
 
     // broadcast the message
-    public void broadcast(Player player, String message){
+    private void broadcast(Player player, String message){
         // get players on the proxy exclude those who send message
         Collection<Player> players = proxyServer.getAllPlayers();
-        logger.info(String.valueOf(players));
-        for(Player p: players){
-            if(Objects.equals(p.getUsername(), player.getUsername())){
-                players.remove(p);
-                break;
-            }
-        }
         // send message to other players
         for(Player p: players){
-            p.spoofChatInput("["+player.getUsername()+"]:"+ message);
+            if(!Objects.equals(p.getUsername(), player.getUsername())){
+                p.spoofChatInput("<"+player.getUsername()+"> "+ message);
+            }
         }
-
     }
 }
 

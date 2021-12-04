@@ -1,5 +1,6 @@
 package com.wdrshadow.essentialinfo.module.tablist;
 
+import com.google.inject.Inject;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
@@ -19,6 +20,7 @@ public class TabList {
     private final Logger logger;
 
     // connect the module to the plugin and server
+    @Inject
     public TabList(ProxyServer proxyServer, Logger logger) {
         this.proxyServer = proxyServer;
         this.logger = logger;
@@ -51,7 +53,6 @@ public class TabList {
                     );
                 }
             }
-
             for (TabListEntry entry : player.getTabList().getEntries()) {
                 UUID uuid = entry.getProfile().getId();
                 Optional<Player> playerOptional = proxyServer.getPlayer(uuid);
