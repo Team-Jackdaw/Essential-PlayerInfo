@@ -1,5 +1,7 @@
 # Essential-PlayerInfo
 
+**This repo had been transported to our team, and will not be updated here. https://github.com/Team-Jackdaw/Essential-PlayerInfo**
+
 ## Introduce
 
 This is a very lightweight plugin for Velocity proxy.
