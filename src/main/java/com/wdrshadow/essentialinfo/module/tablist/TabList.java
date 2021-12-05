@@ -71,7 +71,7 @@ public class TabList {
                                     + player1.getUsername()))
                             .latency((int) player1.getPing())
                             .profile(player1.getGameProfile())
-                            .gameMode(0)
+                            .gameMode(3)
                             .tabList(player.getTabList())
                             .build());
                     }
