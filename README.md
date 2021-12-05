@@ -43,11 +43,9 @@ The most basic cross-server chat function.
 
 ## To do list
 
-**1. Show players current server on TabList and global Chat.**
+**1. Get the server list and provide a way to click to switch.**
 
-**2. Get the server list and provide a way to click to switch.**
-
-**3. Let players customize the default server.**
+**2. Let players customize the default server.**
 
 ## Build
 
