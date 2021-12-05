@@ -19,7 +19,7 @@ import java.nio.file.Path;
         id = "essential-info",
         name = "Essential Info",
         version = BuildConstants.VERSION,
-        authors = {"WDRshadow"}
+        authors = {"Team-Jackdaw"}
 )
 public class EssentialInfo {
 
@@ -34,9 +34,6 @@ public class EssentialInfo {
     private @DataDirectory
     Path dataDirectory;
 
-    // get config
-    private Setting setting;
-
     // connect to the server and logger
     @Inject
     public EssentialInfo(ProxyServer proxyServer, Logger logger){
@@ -47,7 +44,8 @@ public class EssentialInfo {
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.setting = new Setting(dataDirectory.toFile());
+        // get config
+        Setting setting = new Setting(dataDirectory.toFile(), logger);
 
         if (setting.isTabListEnabled()) {
             this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this));
@@ -55,7 +53,7 @@ public class EssentialInfo {
         }
 
         if (setting.isMessageEnabled()) {
-            this.proxyServer.getEventManager().register(this, new Message(this.proxyServer));
+            this.proxyServer.getEventManager().register(this, new Message(this.proxyServer, logger));
             logger.info("Loaded Message.");
         }
 

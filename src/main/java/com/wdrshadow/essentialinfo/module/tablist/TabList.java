@@ -6,6 +6,7 @@ import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -26,31 +27,54 @@ public class TabList {
     // listener of player login
     @Subscribe
     public void connect(ServerConnectedEvent event) {
-        update();
-        quitNote(event);
+        connectUpdate(event);
+        connectNote(event);
     }
 
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
-        Player player = event.getPlayer();
-        remove(player);
+        remove(event.getPlayer());
+        disconnectNote(event);
     }
 
     // update tab list
-    private void update() {
+    private void connectUpdate(ServerConnectedEvent event) {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
-                if (!player.getTabList().containsEntry(player1.getUniqueId()) && !player.getCurrentServer().equals(player1.getCurrentServer())) {
+                // not the same server && not already exist
+                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                    String serverName = player1.getCurrentServer().isPresent()
+                            ? player1.getCurrentServer().get().getServerInfo().getName()
+                            : event.getServer().getServerInfo().getName();
                     player.getTabList().addEntry(TabListEntry.builder()
-                            .displayName(Component.text("["
-                                    + player1.getCurrentServer().get().getServerInfo().getName()
-                                    + "] " + player1.getUsername()))
+                            .displayName(Component.text("[" + serverName + "] " + player1.getUsername()))
                             .latency((int) player1.getPing())
                             .profile(player1.getGameProfile())
                             .gameMode(0)
                             .tabList(player.getTabList())
                             .build());
+                }
+            }
+        }
+    }
+
+    private void update(){
+        for (Player player : this.proxyServer.getAllPlayers()) {
+            for (Player player1 : this.proxyServer.getAllPlayers()) {
+                // not the same server && not already exist
+                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                    if(player1.getCurrentServer().isPresent()){
+                    player.getTabList().addEntry(TabListEntry.builder()
+                            .displayName(Component.text("["
+                                    + player1.getCurrentServer().get().getServerInfo().getName() + "] "
+                                    + player1.getUsername()))
+                            .latency((int) player1.getPing())
+                            .profile(player1.getGameProfile())
+                            .gameMode(0)
+                            .tabList(player.getTabList())
+                            .build());
+                    }
                 }
             }
         }
@@ -66,14 +90,34 @@ public class TabList {
     }
 
     // note of connect server
-    private void quitNote(ServerConnectedEvent event){
+    private void connectNote(ServerConnectedEvent event){
         Player player = event.getPlayer();
+        String sendMessage;
         if (event.getPreviousServer().isPresent()){
-            String sendMessage = "[Note]: Player "+player.getUsername() + " left from Server "
-                    + event.getPreviousServer().get().getServerInfo().getName() + " to Server "
-                    + event.getServer().getServerInfo().getName();
+            sendMessage = player.getUsername() + ": ["
+                    + event.getPreviousServer().get().getServerInfo().getName() + "] -> ["
+                    + event.getServer().getServerInfo().getName() + "]";
             TextComponent textComponent = Component.text(sendMessage);
-            event.getPreviousServer().get().sendMessage(textComponent);
+            for (RegisteredServer s : this.proxyServer.getAllServers()){
+                s.sendMessage(textComponent);
+            }
+        } else {
+            sendMessage = player.getUsername() + ": Connect to ["
+                    + event.getServer().getServerInfo().getName() + "].";
+            TextComponent textComponent = Component.text(sendMessage);
+            for (RegisteredServer s : this.proxyServer.getAllServers()){
+                s.sendMessage(textComponent);
+            }
+        }
+    }
+
+    //note of disconnect server
+    private void disconnectNote(DisconnectEvent event){
+        Player player = event.getPlayer();
+        String sendMessage = player.getUsername() + ": Exit the servers.";
+        TextComponent textComponent = Component.text(sendMessage);
+        for (RegisteredServer s : this.proxyServer.getAllServers()){
+            s.sendMessage(textComponent);
         }
     }
 }
