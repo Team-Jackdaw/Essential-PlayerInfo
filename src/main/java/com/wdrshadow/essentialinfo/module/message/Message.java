@@ -34,7 +34,7 @@ public class Message {
     // broadcast the message
     private void broadcast(Player player, String message){
         // Audience message
-        String sendMessage = "<"+player.getUsername()+"> "+ message;
+        String sendMessage = "[" + player.getCurrentServer().get().getServerInfo().getName() + "] <" +player.getUsername() + "> "+ message;
         this.textComponent = Component.text(sendMessage);
         // get players on the proxy exclude those who send message
         Collection<Player> players = proxyServer.getAllPlayers();

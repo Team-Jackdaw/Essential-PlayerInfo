@@ -25,9 +25,9 @@ public class EssentialInfo {
 
     // generate instance server and logger
     @Inject
-    private ProxyServer proxyServer;
+    private final ProxyServer proxyServer;
     @Inject
-    private Logger logger;
+    private final Logger logger;
 
     // path of the plugin
     @Inject

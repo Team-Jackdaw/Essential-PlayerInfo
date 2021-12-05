@@ -8,6 +8,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,21 +27,25 @@ public class TabList {
     @Subscribe
     public void connect(ServerConnectedEvent event) {
         update();
+        quitNote(event);
     }
 
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
-        remove(event.getPlayer());
+        Player player = event.getPlayer();
+        remove(player);
     }
 
     // update tab list
     private void update() {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
-                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                if (!player.getTabList().containsEntry(player1.getUniqueId()) && !player.getCurrentServer().equals(player1.getCurrentServer())) {
                     player.getTabList().addEntry(TabListEntry.builder()
-                            .displayName(Component.text(player1.getUsername()))
+                            .displayName(Component.text("["
+                                    + player1.getCurrentServer().get().getServerInfo().getName()
+                                    + "] " + player1.getUsername()))
                             .latency((int) player1.getPing())
                             .profile(player1.getGameProfile())
                             .gameMode(0)
@@ -57,6 +62,18 @@ public class TabList {
             if (p.getTabList().containsEntry(player.getUniqueId())) {
                 p.getTabList().removeEntry(player.getUniqueId());
             }
+        }
+    }
+
+    // note of connect server
+    private void quitNote(ServerConnectedEvent event){
+        Player player = event.getPlayer();
+        if (event.getPreviousServer().isPresent()){
+            String sendMessage = "[Note]: Player "+player.getUsername() + " left from Server "
+                    + event.getPreviousServer().get().getServerInfo().getName() + " to Server "
+                    + event.getServer().getServerInfo().getName();
+            TextComponent textComponent = Component.text(sendMessage);
+            event.getPreviousServer().get().sendMessage(textComponent);
         }
     }
 }
