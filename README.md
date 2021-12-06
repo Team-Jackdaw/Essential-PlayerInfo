@@ -22,7 +22,7 @@ Show global players on the TabList.
 
 **Global chat**
 
-The most basic cross-server chat function.
+The most basic cross-server chat function. && Simple connection tips.
 
 ![Message.png][3]
 
