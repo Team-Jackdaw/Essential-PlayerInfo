@@ -49,7 +49,7 @@ public class EssentialInfo {
         Setting setting = new Setting(dataDirectory.toFile(), logger);
 
         if (setting.isTabListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this));
+            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
             logger.info("Loaded TabList.");
         }
 

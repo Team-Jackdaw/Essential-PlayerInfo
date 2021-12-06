@@ -8,16 +8,19 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
+import org.slf4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
 public class TabList {
     // class server
     private final ProxyServer proxyServer;
+    private final Logger logger;
 
     // connect the module to the plugin and server
-    public TabList(ProxyServer proxyServer, EssentialInfo plugin) {
+    public TabList(ProxyServer proxyServer, EssentialInfo plugin, Logger logger) {
         this.proxyServer = proxyServer;
+        this.logger = logger;
         this.proxyServer.getScheduler().buildTask(plugin, this::update)
                 .repeat(50L, TimeUnit.MILLISECONDS).schedule();
     }
@@ -69,7 +72,9 @@ public class TabList {
     private void update(){
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
-                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                // not the same server && not already exist
+                if (!player.getTabList().containsEntry(player1.getUniqueId()) &&
+                        !player1.getUniqueId().equals(player.getUniqueId())) {
                     if(player1.getCurrentServer().isPresent()){
                         player.getTabList().addEntry(TabListEntry.builder()
                                 .displayName(Component.text("["
@@ -80,6 +85,8 @@ public class TabList {
                                 .gameMode(3)
                                 .tabList(player.getTabList())
                                 .build());
+                    } else {
+                        logger.warn("Could not found " + player1.getUsername() + "'s current Server!");
                     }
                 }
             }
