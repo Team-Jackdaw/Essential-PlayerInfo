@@ -17,6 +17,7 @@ public class Setting {
     private final boolean tabListEnabled;
     private final boolean messageEnabled;
     private final boolean pingListEnabled;
+    private final boolean connectionTipsEnabled;
 
     public Setting(File dataFolder, Logger logger){
         this.logger = logger;
@@ -30,6 +31,7 @@ public class Setting {
         this.tabListEnabled = toml.getBoolean("tabList.enabled");
         this.messageEnabled = toml.getBoolean("message.enabled");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
+        this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
     }
 
     private void saveDefaultConfig() {
@@ -67,4 +69,7 @@ public class Setting {
         return pingListEnabled;
     }
 
+    public boolean isConnectionTipsEnabled() {
+        return connectionTipsEnabled;
+    }
 }

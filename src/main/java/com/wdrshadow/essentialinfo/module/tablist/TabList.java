@@ -6,10 +6,8 @@ import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
-import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,14 +26,12 @@ public class TabList {
     @Subscribe
     public void connect(ServerConnectedEvent event) {
         connectUpdate(event);
-        connectNote(event);
     }
 
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
-        remove(event.getPlayer());
-        disconnectNote(event);
+        disconnectUpdate(event.getPlayer());
     }
 
     // update tab list
@@ -51,37 +47,16 @@ public class TabList {
                             .displayName(Component.text("[" + serverName + "] " + player1.getUsername()))
                             .latency((int) player1.getPing())
                             .profile(player1.getGameProfile())
-                            .gameMode(0)
-                            .tabList(player.getTabList())
-                            .build());
-                }
-            }
-        }
-    }
-
-    private void update(){
-        for (Player player : this.proxyServer.getAllPlayers()) {
-            for (Player player1 : this.proxyServer.getAllPlayers()) {
-                // not the same server && not already exist
-                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
-                    if(player1.getCurrentServer().isPresent()){
-                    player.getTabList().addEntry(TabListEntry.builder()
-                            .displayName(Component.text("["
-                                    + player1.getCurrentServer().get().getServerInfo().getName() + "] "
-                                    + player1.getUsername()))
-                            .latency((int) player1.getPing())
-                            .profile(player1.getGameProfile())
                             .gameMode(3)
                             .tabList(player.getTabList())
                             .build());
-                    }
                 }
             }
         }
     }
 
     // remove disconnected player from list
-    private void remove(Player player) {
+    private void disconnectUpdate(Player player) {
         for (Player p : this.proxyServer.getAllPlayers()) {
             if (p.getTabList().containsEntry(player.getUniqueId())) {
                 p.getTabList().removeEntry(player.getUniqueId());
@@ -89,35 +64,24 @@ public class TabList {
         }
     }
 
-    // note of connect server
-    private void connectNote(ServerConnectedEvent event){
-        Player player = event.getPlayer();
-        String sendMessage;
-        if (event.getPreviousServer().isPresent()){
-            sendMessage = player.getUsername() + ": ["
-                    + event.getPreviousServer().get().getServerInfo().getName() + "] -> ["
-                    + event.getServer().getServerInfo().getName() + "]";
-            TextComponent textComponent = Component.text(sendMessage);
-            for (RegisteredServer s : this.proxyServer.getAllServers()){
-                s.sendMessage(textComponent);
+    // normal update
+    private void update(){
+        for (Player player : this.proxyServer.getAllPlayers()) {
+            for (Player player1 : this.proxyServer.getAllPlayers()) {
+                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                    if(player1.getCurrentServer().isPresent()){
+                        player.getTabList().addEntry(TabListEntry.builder()
+                                .displayName(Component.text("["
+                                        + player1.getCurrentServer().get().getServerInfo().getName() + "] "
+                                        + player1.getUsername()))
+                                .latency((int) player1.getPing())
+                                .profile(player1.getGameProfile())
+                                .gameMode(3)
+                                .tabList(player.getTabList())
+                                .build());
+                    }
+                }
             }
-        } else {
-            sendMessage = player.getUsername() + ": Connect to ["
-                    + event.getServer().getServerInfo().getName() + "].";
-            TextComponent textComponent = Component.text(sendMessage);
-            for (RegisteredServer s : this.proxyServer.getAllServers()){
-                s.sendMessage(textComponent);
-            }
-        }
-    }
-
-    //note of disconnect server
-    private void disconnectNote(DisconnectEvent event){
-        Player player = event.getPlayer();
-        String sendMessage = player.getUsername() + ": Exit the servers.";
-        TextComponent textComponent = Component.text(sendMessage);
-        for (RegisteredServer s : this.proxyServer.getAllServers()){
-            s.sendMessage(textComponent);
         }
     }
 }

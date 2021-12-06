@@ -7,6 +7,7 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.wdrshadow.essentialinfo.configuration.Setting;
+import com.wdrshadow.essentialinfo.module.connectionTips.ConnectionTips;
 import com.wdrshadow.essentialinfo.module.message.Message;
 import com.wdrshadow.essentialinfo.module.pinglist.PingList;
 import com.wdrshadow.essentialinfo.module.tablist.TabList;
@@ -60,6 +61,11 @@ public class EssentialInfo {
         if (setting.isPingListEnabled()) {
             this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
             logger.info("Loaded PingList.");
+        }
+
+        if (setting.isConnectionTipsEnabled()) {
+            this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer));
+            logger.info("Loaded ConnectionTips.");
         }
     }
     }

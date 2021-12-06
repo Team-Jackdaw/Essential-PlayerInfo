@@ -11,3 +11,7 @@
 [pingList]
     enabled=true
 
+# Connection Tips
+[connectionTips]
+    enabled=true
+
