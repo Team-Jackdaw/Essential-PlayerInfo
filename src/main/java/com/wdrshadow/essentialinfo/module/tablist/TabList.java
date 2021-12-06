@@ -39,7 +39,8 @@ public class TabList {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
                 // not the same server && not already exist
-                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                if (!player.getTabList().containsEntry(player1.getUniqueId()) &&
+                        player1.getUniqueId().equals(player.getUniqueId())) {
                     String serverName = player1.getCurrentServer().isPresent()
                             ? player1.getCurrentServer().get().getServerInfo().getName()
                             : event.getServer().getServerInfo().getName();
