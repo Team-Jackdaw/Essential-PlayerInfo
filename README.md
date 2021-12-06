@@ -62,5 +62,5 @@ run 'gradlew build'
 The built jar file will be in build/libs/
 
 [1]: https://cdn.ussjackdaw.com/image/PingList.png
-[2]: https://cdn.ussjackdaw.com/image/TabList.png
-[3]: https://cdn.ussjackdaw.com/image/Message.png
+[2]: https://cdn.ussjackdaw.com/image/TabList1.png
+[3]: https://cdn.ussjackdaw.com/image/Message1.png
