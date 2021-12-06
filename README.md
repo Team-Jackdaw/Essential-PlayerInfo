@@ -8,23 +8,23 @@ Used API of Velocity 3.1.0, so it may only support Velocity version 3.1.0 and ab
 
 ## Feature
 
-**Global pingList**
+**Global PingList**
 
 Display the player ID on the Minecraft server list.
 
 ![PingList.png][1]
 
-**Global tabList**
+**Global TabList**
 
 Show global players on the TabList.
 
-![TabList.png][2]
+![TabList1.png][2]
 
-**Global chat**
+**Global Chat & ConnectionTips**
 
-The most basic cross-server chat function. && Simple connection tips.
+The most basic cross-server chat function. & Simple connection tips.
 
-![Message.png][3]
+![Message1.png][3]
 
 ## Config
 
@@ -39,6 +39,10 @@ The most basic cross-server chat function. && Simple connection tips.
 
     # Ping List
     [pingList]
+        enabled=true
+        
+    # ConnectionTips
+    [connectionTips]
         enabled=true
 
 ## To do list
@@ -58,5 +62,5 @@ run 'gradlew build'
 The built jar file will be in build/libs/
 
 [1]: https://cdn.ussjackdaw.com/image/PingList.png
-[2]: https://cdn.ussjackdaw.com/image/TabList.png
-[3]: https://cdn.ussjackdaw.com/image/Message.png
+[2]: https://cdn.ussjackdaw.com/image/TabList1.png
+[3]: https://cdn.ussjackdaw.com/image/Message1.png
