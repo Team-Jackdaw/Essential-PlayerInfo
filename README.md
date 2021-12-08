@@ -1,7 +1,5 @@
 # Essential-PlayerInfo
 
-**This repo had been transported to our team, and will not be updated here. https://github.com/Team-Jackdaw/Essential-PlayerInfo**
-
 ## Introduce
 
 This is a very lightweight plugin for Velocity proxy.
@@ -52,6 +50,8 @@ The most basic cross-server chat function. & Simple connection tips.
 **1. Get the server list and provide a way to click to switch.**
 
 **2. Let players customize the default server.**
+
+**3. **
 
 ## Build
 
