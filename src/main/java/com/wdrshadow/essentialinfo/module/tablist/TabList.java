@@ -8,16 +8,19 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
 import com.wdrshadow.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
+import org.slf4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
 public class TabList {
     // class server
     private final ProxyServer proxyServer;
+    private final Logger logger;
 
     // connect the module to the plugin and server
-    public TabList(ProxyServer proxyServer, EssentialInfo plugin) {
+    public TabList(ProxyServer proxyServer, EssentialInfo plugin, Logger logger) {
         this.proxyServer = proxyServer;
+        this.logger = logger;
         this.proxyServer.getScheduler().buildTask(plugin, this::update)
                 .repeat(50L, TimeUnit.MILLISECONDS).schedule();
     }
@@ -25,25 +28,30 @@ public class TabList {
     // listener of player login
     @Subscribe
     public void connect(ServerConnectedEvent event) {
-        update();
+        connectUpdate(event);
     }
 
     // listener of player disconnect
     @Subscribe
     public void disconnect(DisconnectEvent event) {
-        remove(event.getPlayer());
+        disconnectUpdate(event.getPlayer());
     }
 
     // update tab list
-    private void update() {
+    private void connectUpdate(ServerConnectedEvent event) {
         for (Player player : this.proxyServer.getAllPlayers()) {
             for (Player player1 : this.proxyServer.getAllPlayers()) {
-                if (!player.getTabList().containsEntry(player1.getUniqueId())) {
+                // not the same server && not already exist
+                if (!player.getTabList().containsEntry(player1.getUniqueId()) &&
+                        !player1.getUniqueId().equals(player.getUniqueId())) {
+                    String serverName = player1.getCurrentServer().isPresent()
+                            ? player1.getCurrentServer().get().getServerInfo().getName()
+                            : event.getServer().getServerInfo().getName();
                     player.getTabList().addEntry(TabListEntry.builder()
-                            .displayName(Component.text(player1.getUsername()))
+                            .displayName(Component.text("[" + serverName + "] " + player1.getUsername()))
                             .latency((int) player1.getPing())
                             .profile(player1.getGameProfile())
-                            .gameMode(0)
+                            .gameMode(3)
                             .tabList(player.getTabList())
                             .build());
                 }
@@ -52,10 +60,35 @@ public class TabList {
     }
 
     // remove disconnected player from list
-    private void remove(Player player) {
+    private void disconnectUpdate(Player player) {
         for (Player p : this.proxyServer.getAllPlayers()) {
             if (p.getTabList().containsEntry(player.getUniqueId())) {
                 p.getTabList().removeEntry(player.getUniqueId());
+            }
+        }
+    }
+
+    // normal update
+    private void update(){
+        for (Player player : this.proxyServer.getAllPlayers()) {
+            for (Player player1 : this.proxyServer.getAllPlayers()) {
+                // not the same server && not already exist
+                if (!player.getTabList().containsEntry(player1.getUniqueId()) &&
+                        !player1.getUniqueId().equals(player.getUniqueId())) {
+                    if(player1.getCurrentServer().isPresent()){
+                        player.getTabList().addEntry(TabListEntry.builder()
+                                .displayName(Component.text("["
+                                        + player1.getCurrentServer().get().getServerInfo().getName() + "] "
+                                        + player1.getUsername()))
+                                .latency((int) player1.getPing())
+                                .profile(player1.getGameProfile())
+                                .gameMode(3)
+                                .tabList(player.getTabList())
+                                .build());
+                    } else {
+                        logger.warn("Could not found " + player1.getUsername() + "'s current Server!");
+                    }
+                }
             }
         }
     }

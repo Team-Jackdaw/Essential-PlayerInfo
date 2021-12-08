@@ -10,23 +10,23 @@ Used API of Velocity 3.1.0, so it may only support Velocity version 3.1.0 and ab
 
 ## Feature
 
-**Global pingList**
+**Global PingList**
 
 Display the player ID on the Minecraft server list.
 
 ![PingList.png][1]
 
-**Global tabList**
+**Global TabList**
 
 Show global players on the TabList.
 
-![TabList.png][2]
+![TabList1.png][2]
 
-**Global chat**
+**Global Chat & ConnectionTips**
 
-The most basic cross-server chat function.
+The most basic cross-server chat function. & Simple connection tips.
 
-![Message.png][3]
+![Message1.png][3]
 
 ## Config
 
@@ -42,14 +42,16 @@ The most basic cross-server chat function.
     # Ping List
     [pingList]
         enabled=true
+        
+    # ConnectionTips
+    [connectionTips]
+        enabled=true
 
 ## To do list
 
-**1. Show players current server on TabList and global Chat.**
+**1. Get the server list and provide a way to click to switch.**
 
-**2. Get the server list and provide a way to click to switch.**
-
-**3. Let players customize the default server.**
+**2. Let players customize the default server.**
 
 ## Build
 

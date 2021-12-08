@@ -7,6 +7,7 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.wdrshadow.essentialinfo.configuration.SettingManager;
+import com.wdrshadow.essentialinfo.module.connectionTips.ConnectionTips;
 import com.wdrshadow.essentialinfo.module.message.Message;
 import com.wdrshadow.essentialinfo.module.pinglist.PingList;
 import com.wdrshadow.essentialinfo.module.tablist.TabList;
@@ -20,23 +21,20 @@ import java.nio.file.Path;
         id = "essential-info",
         name = "Essential Info",
         version = BuildConstants.VERSION,
-        authors = {"WDRshadow"}
+        authors = {"Team-Jackdaw"}
 )
 public class EssentialInfo {
 
     // generate instance server and logger
     @Inject
-    private ProxyServer proxyServer;
+    private final ProxyServer proxyServer;
     @Inject
-    private Logger logger;
+    private final Logger logger;
 
     // path of the plugin
     @Inject
     private @DataDirectory
     Path dataDirectory;
-
-    // get config
-    private SettingManager settingManager;
 
     // connect to the server and logger
     @Inject
@@ -48,28 +46,35 @@ public class EssentialInfo {
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        // get config
+        SettingManager setting;
         try
         {
-        this.settingManager = new SettingManager(dataDirectory.toFile());
+            setting = new SettingManager(dataDirectory.toFile(), logger);
         }
-        catch (IOException e)
+        catch (IOException ioException)
         {
-            System.out.println("IO Error");
-            e.getStackTrace();
+            System.out.println(ioException.getMessage());
+            return;
         }
-        if (settingManager.isTabListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this));
+        if (setting.isTabListEnabled()) {
+            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
             logger.info("Loaded TabList.");
         }
 
-        if (settingManager.isMessageEnabled()) {
-            this.proxyServer.getEventManager().register(this, new Message(this.proxyServer));
+        if (setting.isMessageEnabled()) {
+            this.proxyServer.getEventManager().register(this, new Message(this.proxyServer, logger));
             logger.info("Loaded Message.");
         }
 
-        if (settingManager.isPingListEnabled()) {
+        if (setting.isPingListEnabled()) {
             this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
             logger.info("Loaded PingList.");
+        }
+
+        if (setting.isConnectionTipsEnabled()) {
+            this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer));
+            logger.info("Loaded ConnectionTips.");
         }
     }
     }

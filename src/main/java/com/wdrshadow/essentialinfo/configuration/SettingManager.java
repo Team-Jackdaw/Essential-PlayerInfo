@@ -1,6 +1,7 @@
 package com.wdrshadow.essentialinfo.configuration;
 
 import com.moandjiezana.toml.Toml;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,12 +18,14 @@ import java.nio.file.Files;
  * @version 0.0.3
  */
 public class SettingManager {
+    private final Logger logger;
     private final File workingDirectory;
     private final File configFile;
 
     private boolean tabListEnabled;
     private boolean messageEnabled;
     private boolean pingListEnabled;
+    private boolean connectionTipsEnabled;
 
     /**
      * Instantiates a new Setting manager.
@@ -31,7 +34,8 @@ public class SettingManager {
      * @throws IOException the io exception. The client who
      *                     create the instance is responsible for this.
      */
-    public SettingManager(File workingDirectory) throws IOException {
+    public SettingManager(File workingDirectory, Logger logger) throws IOException {
+        this.logger = logger;
         this.workingDirectory = workingDirectory;
         this.configFile = new File(this.workingDirectory, "config.toml");
         setUp();
@@ -43,6 +47,7 @@ public class SettingManager {
         this.tabListEnabled = toml.getBoolean("tabList.enabled");
         this.messageEnabled = toml.getBoolean("message.enabled");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
+        this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
     }
 
     private void saveDefaultConfig() throws IOException {
@@ -82,6 +87,15 @@ public class SettingManager {
      */
     public boolean isPingListEnabled() {
         return pingListEnabled;
+    }
+
+    /**
+     * Is connection tips enabled.
+     *
+     * @return the boolean, i.e. enabled returns true; otherwise, false.
+     */
+    public boolean isConnectionTipsEnabled() {
+        return connectionTipsEnabled;
     }
 
 }
