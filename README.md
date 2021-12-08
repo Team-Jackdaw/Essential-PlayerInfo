@@ -51,7 +51,7 @@ The most basic cross-server chat function. & Simple connection tips.
 
 **2. Let players customize the default server.**
 
-**3. **
+**3. Add a way to customize the messages.**
 
 ## Build
 
