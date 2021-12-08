@@ -6,12 +6,13 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.wdrshadow.essentialinfo.configuration.Setting;
+import com.wdrshadow.essentialinfo.configuration.SettingManager;
 import com.wdrshadow.essentialinfo.module.message.Message;
 import com.wdrshadow.essentialinfo.module.pinglist.PingList;
 import com.wdrshadow.essentialinfo.module.tablist.TabList;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 // register the plugin
@@ -35,7 +36,7 @@ public class EssentialInfo {
     Path dataDirectory;
 
     // get config
-    private Setting setting;
+    private SettingManager settingManager;
 
     // connect to the server and logger
     @Inject
@@ -47,19 +48,26 @@ public class EssentialInfo {
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.setting = new Setting(dataDirectory.toFile());
-
-        if (setting.isTabListEnabled()) {
+        try
+        {
+        this.settingManager = new SettingManager(dataDirectory.toFile());
+        }
+        catch (IOException e)
+        {
+            System.out.println("IO Error");
+            e.getStackTrace();
+        }
+        if (settingManager.isTabListEnabled()) {
             this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this));
             logger.info("Loaded TabList.");
         }
 
-        if (setting.isMessageEnabled()) {
+        if (settingManager.isMessageEnabled()) {
             this.proxyServer.getEventManager().register(this, new Message(this.proxyServer));
             logger.info("Loaded Message.");
         }
 
-        if (setting.isPingListEnabled()) {
+        if (settingManager.isPingListEnabled()) {
             this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
             logger.info("Loaded PingList.");
         }
