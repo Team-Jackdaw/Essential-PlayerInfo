@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.wdrshadow'
-version = '1.0.5-SNAPSHOP'
+version = '1.0.6-SNAPSHOP'
 
 repositories {
     mavenCentral()

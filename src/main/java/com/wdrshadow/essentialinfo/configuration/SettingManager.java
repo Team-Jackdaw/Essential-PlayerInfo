@@ -52,12 +52,14 @@ public class SettingManager {
 
     private void saveDefaultConfig() throws IOException {
         if (!workingDirectory.exists()) {
-            workingDirectory.mkdir();
+            boolean aBoolean = workingDirectory.mkdir();
+            if (!aBoolean) logger.warn("Could Not make a new config.toml file.");
         }
         if (configFile.exists()) {
             // Do nothing
         } else {
             InputStream in = SettingManager.class.getResourceAsStream("/config.toml");
+            assert in != null;
             Files.copy(in, configFile.toPath());
         }
     }

@@ -1,5 +1,6 @@
 # User-specific stuff
 .idea/
+.vscode/
 
 *.iml
 *.ipr
@@ -110,6 +111,8 @@ gradle-app.setting
 .gradletasknamecache
 
 **/build/
+
+bin/
 
 # Common working directory
 run/
