@@ -55,12 +55,16 @@ public class SettingManager {
             boolean aBoolean = workingDirectory.mkdir();
             if (!aBoolean) logger.warn("Could Not make a new config.toml file.");
         }
-        if (configFile.exists()) {
-            // Do nothing
-        } else {
+        if (!configFile.exists()) {
             InputStream in = SettingManager.class.getResourceAsStream("/config.toml");
             assert in != null;
-            Files.copy(in, configFile.toPath());
+            try {
+                Files.copy(in, configFile.toPath());
+            } catch (IOException exception) {
+                throw exception;
+            } finally {
+                in.close();
+            }
         }
     }
 
