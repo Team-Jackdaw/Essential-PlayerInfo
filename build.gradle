@@ -2,6 +2,11 @@ plugins {
     id 'java'
     id 'eclipse'
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
+    id 'pmd'
+}
+
+pmd {
+    ignoreFailures = true
 }
 
 group = 'com.wdrshadow'
