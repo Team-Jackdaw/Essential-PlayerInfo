@@ -11,6 +11,7 @@ import com.wdrshadow.essentialinfo.module.connectionTips.ConnectionTips;
 import com.wdrshadow.essentialinfo.module.message.Message;
 import com.wdrshadow.essentialinfo.module.pinglist.PingList;
 import com.wdrshadow.essentialinfo.module.tablist.TabList;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -43,20 +44,13 @@ public class EssentialInfo {
         this.logger = logger;
     }
 
+
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // get config
-        SettingManager setting;
-        try
-        {
-            setting = new SettingManager(dataDirectory.toFile(), logger);
-        }
-        catch (IOException ioException)
-        {
-            System.out.println(ioException.getMessage());
-            return;
-        }
+        SettingManager setting = getSettingManager();
+        if (setting == null) return;
         if (setting.isTabListEnabled()) {
             this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
             logger.info("Loaded TabList.");
@@ -77,5 +71,20 @@ public class EssentialInfo {
             logger.info("Loaded ConnectionTips.");
         }
     }
+
+    @Nullable
+    private SettingManager getSettingManager() {
+        SettingManager setting;
+        try
+        {
+            setting = new SettingManager(dataDirectory.toFile(), logger);
+        }
+        catch (IOException ioException)
+        {
+            System.out.println(ioException.getMessage());
+            return null;
+        }
+        return setting;
     }
+}
 
