@@ -11,12 +11,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.slf4j.Logger;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Message {
     // class for Server
     private final ProxyServer proxyServer;
     private final Logger logger;
+    private final Parser parser = MessageParser.getParser();
 
     // connect the module to the plugin and server
     @Inject
@@ -30,7 +32,10 @@ public class Message {
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        broadcast(player, message);
+        HashMap parsedMessage = parser.parse(message);
+        if (parsedMessage.get("broadcastTag").equals(true)){
+            broadcast(player, parsedMessage.get("content").toString());
+        }
     }
 
     // broadcast the message
