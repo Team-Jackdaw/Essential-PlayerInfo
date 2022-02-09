@@ -1,4 +1,4 @@
-package com.wdrshadow.essentialinfo.module.message;
+package com.jackdaw.essentialinfo.module.message;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;

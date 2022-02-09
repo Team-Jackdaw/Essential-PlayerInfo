@@ -1,4 +1,4 @@
-package com.wdrshadow.essentialinfo.configuration;
+package com.jackdaw.essentialinfo.configuration;
 
 import com.moandjiezana.toml.Toml;
 import org.slf4j.Logger;

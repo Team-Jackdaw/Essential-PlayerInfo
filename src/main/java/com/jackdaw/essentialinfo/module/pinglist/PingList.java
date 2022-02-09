@@ -1,4 +1,4 @@
-package com.wdrshadow.essentialinfo.module.pinglist;
+package com.jackdaw.essentialinfo.module.pinglist;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;

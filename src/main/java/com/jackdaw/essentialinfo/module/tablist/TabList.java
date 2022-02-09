@@ -1,4 +1,4 @@
-package com.wdrshadow.essentialinfo.module.tablist;
+package com.jackdaw.essentialinfo.module.tablist;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
@@ -6,7 +6,7 @@ import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
-import com.wdrshadow.essentialinfo.EssentialInfo;
+import com.jackdaw.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 

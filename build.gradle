@@ -9,7 +9,7 @@ pmd {
     ignoreFailures = true
 }
 
-group = 'com.wdrshadow'
+group = 'com.jackdaw'
 version = '1.0.6-SNAPSHOP'
 
 repositories {

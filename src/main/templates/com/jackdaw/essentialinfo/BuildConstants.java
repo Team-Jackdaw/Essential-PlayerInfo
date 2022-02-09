@@ -1,4 +1,4 @@
-package com.wdrshadow.essentialinfo;
+package com.jackdaw.essentialinfo;
 
 // The constants are replaced before compilation
 public class BuildConstants {

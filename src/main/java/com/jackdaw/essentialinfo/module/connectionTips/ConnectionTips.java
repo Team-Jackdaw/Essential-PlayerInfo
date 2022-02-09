@@ -1,4 +1,4 @@
-package com.wdrshadow.essentialinfo.module.connectionTips;
+package com.jackdaw.essentialinfo.module.connectionTips;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;

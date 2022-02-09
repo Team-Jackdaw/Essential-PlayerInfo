@@ -1,16 +1,16 @@
-package com.wdrshadow.essentialinfo;
+package com.jackdaw.essentialinfo;
 
 import com.google.inject.Inject;
+import com.jackdaw.essentialinfo.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.message.Message;
+import com.jackdaw.essentialinfo.module.pinglist.PingList;
+import com.jackdaw.essentialinfo.module.tablist.TabList;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.wdrshadow.essentialinfo.configuration.SettingManager;
-import com.wdrshadow.essentialinfo.module.connectionTips.ConnectionTips;
-import com.wdrshadow.essentialinfo.module.message.Message;
-import com.wdrshadow.essentialinfo.module.pinglist.PingList;
-import com.wdrshadow.essentialinfo.module.tablist.TabList;
+import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
