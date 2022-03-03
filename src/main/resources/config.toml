@@ -6,6 +6,7 @@
 # Global massage
 [message]
     enabled=true
+    command-to-broadcast=ture
 
 # Ping List
 [pingList]

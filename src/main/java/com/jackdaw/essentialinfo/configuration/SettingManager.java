@@ -26,6 +26,7 @@ public class SettingManager {
     private boolean messageEnabled;
     private boolean pingListEnabled;
     private boolean connectionTipsEnabled;
+    private boolean isCommandToBroadcast;
 
     /**
      * Instantiates a new Setting manager.
@@ -46,6 +47,7 @@ public class SettingManager {
         Toml toml = new Toml().read(new File(workingDirectory, "config.toml"));
         this.tabListEnabled = toml.getBoolean("tabList.enabled");
         this.messageEnabled = toml.getBoolean("message.enabled");
+        this.isCommandToBroadcast = toml.getBoolean("message.command-to-broadcast");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
         this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
     }
@@ -84,6 +86,15 @@ public class SettingManager {
      */
     public boolean isMessageEnabled() {
         return messageEnabled;
+    }
+
+    /**
+     * Is user need to use command for broadcasting.
+     *
+     * @return the boolean, i.e. enabled returns true; otherwise, false.
+     */
+    public boolean isCommandToBroadcastEnabled() {
+        return isCommandToBroadcast;
     }
 
     /**

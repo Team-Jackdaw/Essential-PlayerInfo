@@ -39,7 +39,7 @@ public class EssentialInfo {
 
     // connect to the server and logger
     @Inject
-    public EssentialInfo(ProxyServer proxyServer, Logger logger){
+    public EssentialInfo(ProxyServer proxyServer, Logger logger) {
         this.proxyServer = proxyServer;
         this.logger = logger;
     }
@@ -57,7 +57,8 @@ public class EssentialInfo {
         }
 
         if (setting.isMessageEnabled()) {
-            this.proxyServer.getEventManager().register(this, new Message(this.proxyServer, logger));
+            this.proxyServer.getEventManager().register(
+                    this, new Message(this.proxyServer, logger, setting.isCommandToBroadcastEnabled()));
             logger.info("Loaded Message.");
         }
 
@@ -75,12 +76,9 @@ public class EssentialInfo {
     @Nullable
     private SettingManager getSettingManager() {
         SettingManager setting;
-        try
-        {
+        try {
             setting = new SettingManager(dataDirectory.toFile(), logger);
-        }
-        catch (IOException ioException)
-        {
+        } catch (IOException ioException) {
             System.out.println(ioException.getMessage());
             return null;
         }

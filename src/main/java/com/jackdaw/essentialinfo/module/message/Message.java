@@ -19,10 +19,12 @@ public class Message {
     private final ProxyServer proxyServer;
     private final Logger logger;
     private final Parser parser = MessageParser.getParser();
+    private final boolean isCommandToBroadcast;
 
     // connect the module to the plugin and server
     @Inject
-    public Message(ProxyServer proxyServer, Logger logger) {
+    public Message(ProxyServer proxyServer, Logger logger, boolean commandToBroadcast) {
+        this.isCommandToBroadcast = commandToBroadcast;
         this.proxyServer = proxyServer;
         this.logger = logger;
     }
@@ -32,17 +34,22 @@ public class Message {
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        HashMap parsedMessage = parser.parse(message);
-        if (parsedMessage.get("broadcastTag").equals(true)){
-            broadcast(player, parsedMessage.get("content").toString());
+        if (this.isCommandToBroadcast) {
+            HashMap parsedMessage = parser.parse(message);
+            if (parsedMessage.get("broadcastTag").equals(true)) {
+                broadcast(player, parsedMessage.get("content").toString());
+            }
+        } else {
+            broadcast(player, message);
         }
+
     }
 
     // broadcast the message
     private void broadcast(Player player, String message) {
         String sendMessage;
         // Audience message
-        if (player.getCurrentServer().isPresent()){
+        if (player.getCurrentServer().isPresent()) {
             sendMessage = "[" + player.getCurrentServer().get().getServerInfo().getName() + "] <" + player.getUsername() + "> " + message;
         } else {
             sendMessage = "<" + player.getUsername() + "> " + message;
