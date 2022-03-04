@@ -1,13 +1,14 @@
 package com.jackdaw.essentialinfo.module.tablist;
 
+import com.jackdaw.essentialinfo.EssentialInfo;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
-import com.jackdaw.essentialinfo.EssentialInfo;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ public class TabList {
     public TabList(ProxyServer proxyServer, EssentialInfo plugin, Logger logger) {
         this.proxyServer = proxyServer;
         this.logger = logger;
-        this.proxyServer.getScheduler().buildTask(plugin, this::update)
+        this.proxyServer.getScheduler().buildTask(plugin, this::pingUpdate)
                 .repeat(50L, TimeUnit.MILLISECONDS).schedule();
     }
 
@@ -33,63 +34,63 @@ public class TabList {
 
     // listener of player disconnect
     @Subscribe
-    public void disconnect(DisconnectEvent event) {
+    public void disconnect(@NotNull DisconnectEvent event) {
         disconnectUpdate(event.getPlayer());
     }
 
-    // update tab list
-    private void connectUpdate(ServerConnectedEvent event) {
+    // pingUpdate tab list
+    private void connectUpdate(@NotNull ServerConnectedEvent event) {
+        Player playerOfEvent = event.getPlayer();
+        // pingUpdate list of current players
         for (Player player : this.proxyServer.getAllPlayers()) {
-            for (Player player1 : this.proxyServer.getAllPlayers()) {
-                // not the same server && not already exist
-                if (!player.getTabList().containsEntry(player1.getUniqueId()) &&
-                        !player1.getUniqueId().equals(player.getUniqueId())) {
-                    String serverName = player1.getCurrentServer().isPresent()
-                            ? player1.getCurrentServer().get().getServerInfo().getName()
-                            : event.getServer().getServerInfo().getName();
-                    player.getTabList().addEntry(TabListEntry.builder()
-                            .displayName(Component.text("[" + serverName + "] " + player1.getUsername()))
-                            .latency((int) player1.getPing())
-                            .profile(player1.getGameProfile())
-                            .gameMode(3)
-                            .tabList(player.getTabList())
-                            .build());
+            String serverName = event.getServer().getServerInfo().getName();
+            addTabListEntry(player, playerOfEvent, serverName);
+        }
+        // pingUpdate list of new connecting player
+        for (Player player : this.proxyServer.getAllPlayers()) {
+            if (!player.getUniqueId().equals(playerOfEvent.getUniqueId())) {
+                if (player.getCurrentServer().isPresent()) {
+                    String serverName = player.getCurrentServer().get().getServerInfo().getName();
+                    addTabListEntry(playerOfEvent, player, serverName);
                 }
             }
         }
     }
 
     // remove disconnected player from list
-    private void disconnectUpdate(Player player) {
-        for (Player p : this.proxyServer.getAllPlayers()) {
-            if (p.getTabList().containsEntry(player.getUniqueId())) {
-                p.getTabList().removeEntry(player.getUniqueId());
+    private void disconnectUpdate(Player fromPlayer) {
+        for (Player toPlayer : this.proxyServer.getAllPlayers()) {
+            if (toPlayer.getTabList().containsEntry(fromPlayer.getUniqueId())) {
+                toPlayer.getTabList().removeEntry(fromPlayer.getUniqueId());
             }
         }
     }
 
-    // normal update
-    private void update(){
-        for (Player player : this.proxyServer.getAllPlayers()) {
-            for (Player player1 : this.proxyServer.getAllPlayers()) {
-                // not the same server && not already exist
-                if (!player.getTabList().containsEntry(player1.getUniqueId()) &&
-                        !player1.getUniqueId().equals(player.getUniqueId())) {
-                    if(player1.getCurrentServer().isPresent()){
-                        player.getTabList().addEntry(TabListEntry.builder()
-                                .displayName(Component.text("["
-                                        + player1.getCurrentServer().get().getServerInfo().getName() + "] "
-                                        + player1.getUsername()))
-                                .latency((int) player1.getPing())
-                                .profile(player1.getGameProfile())
-                                .gameMode(3)
-                                .tabList(player.getTabList())
-                                .build());
-                    } else {
-                        logger.warn("Could not found " + player1.getUsername() + "'s current Server!");
-                    }
+    // normal pingUpdate
+    private void pingUpdate() {
+        for (Player toPlayer : this.proxyServer.getAllPlayers()) {
+            for (Player fromPlayer : this.proxyServer.getAllPlayers()) {
+                String serverName;
+                if (fromPlayer.getCurrentServer().isPresent()) {
+                    serverName = fromPlayer.getCurrentServer().get().getServerInfo().getName();
+                } else {
+                    continue;
                 }
+                addTabListEntry(toPlayer, fromPlayer, serverName);
             }
+        }
+    }
+
+    // add TabList entry
+    private void addTabListEntry(@NotNull Player toPlayer, @NotNull Player fromPlayer, String serverName) {
+        if (!toPlayer.getUniqueId().equals(fromPlayer.getUniqueId()) && !toPlayer.getTabList().containsEntry(fromPlayer.getUniqueId())) {
+            toPlayer.getTabList().addEntry(TabListEntry.builder()
+                    .displayName(Component.text("[" + serverName + "] " + fromPlayer.getUsername()))
+                    .latency((int) fromPlayer.getPing())
+                    .profile(fromPlayer.getGameProfile())
+                    .gameMode(3)
+                    .tabList(fromPlayer.getTabList())
+                    .build());
         }
     }
 }

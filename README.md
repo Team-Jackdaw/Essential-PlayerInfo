@@ -26,6 +26,18 @@ The most basic cross-server chat function. & Simple connection tips.
 
 ![Message1.png][3]
 
+For those who don't want their servers to be continuous global broadcasts, we provide an option to enable "command to
+broadcast". Which means the chat messages in these servers would be broadcast only when the beginning of the message
+is "#".
+
+For instance, when someone sent "hello world" in two kind:
+
+![ctb1.png][4]
+
+The players in other servers will receive:
+
+![ctb2.png][5]
+
 ## Config
 
     # essential-playerinfo
@@ -36,6 +48,7 @@ The most basic cross-server chat function. & Simple connection tips.
     # Global massage
     [message]
         enabled=true
+        command-to-broadcast=false
 
     # Ping List
     [pingList]
@@ -64,5 +77,11 @@ run 'gradlew build'
 The built jar file will be in build/libs/
 
 [1]: https://cdn.ussjackdaw.com/image/PingList.png
+
 [2]: https://cdn.ussjackdaw.com/image/TabList1.png
+
 [3]: https://cdn.ussjackdaw.com/image/Message1.png
+
+[4]: https://cdn.ussjackdaw.com/image/ctb1.png
+
+[5]: https://cdn.ussjackdaw.com/image/ctb2.png
