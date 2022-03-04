@@ -10,7 +10,7 @@ pmd {
 }
 
 group = 'com.jackdaw'
-version = '1.0.7-build-1.0'
+version = '1.0.7-build-1.2'
 
 repositories {
     mavenCentral()
