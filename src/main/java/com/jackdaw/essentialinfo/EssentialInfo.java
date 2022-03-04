@@ -2,6 +2,7 @@ package com.jackdaw.essentialinfo;
 
 import com.google.inject.Inject;
 import com.jackdaw.essentialinfo.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
 import com.jackdaw.essentialinfo.module.tablist.TabList;
@@ -10,7 +11,6 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -58,7 +58,7 @@ public class EssentialInfo {
 
         if (setting.isMessageEnabled()) {
             this.proxyServer.getEventManager().register(
-                    this, new Message(this.proxyServer, logger, setting.isCommandToBroadcastEnabled()));
+                    this, new Message(this.proxyServer, logger, setting));
             logger.info("Loaded Message.");
         }
 
@@ -68,7 +68,7 @@ public class EssentialInfo {
         }
 
         if (setting.isConnectionTipsEnabled()) {
-            this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer));
+            this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer, setting));
             logger.info("Loaded ConnectionTips.");
         }
     }

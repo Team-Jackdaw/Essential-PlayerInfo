@@ -22,11 +22,18 @@ public class SettingManager {
     private final File workingDirectory;
     private final File configFile;
 
+    private static final String lastVersion = "v2.0";
+
     private boolean tabListEnabled;
     private boolean messageEnabled;
     private boolean pingListEnabled;
     private boolean connectionTipsEnabled;
-    private boolean isCommandToBroadcast;
+    private boolean commandToBroadcastEnabled;
+    private boolean customTextEnabled;
+    private String connectionText;
+    private String serverChangeText;
+    private String disconnectionText;
+    private String chatText;
 
     /**
      * Instantiates a new Setting manager.
@@ -47,9 +54,14 @@ public class SettingManager {
         Toml toml = new Toml().read(new File(workingDirectory, "config.toml"));
         this.tabListEnabled = toml.getBoolean("tabList.enabled");
         this.messageEnabled = toml.getBoolean("message.enabled");
-        this.isCommandToBroadcast = toml.getBoolean("message.command-to-broadcast");
+        this.commandToBroadcastEnabled = toml.getBoolean("message.command-to-broadcast");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
         this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
+        this.customTextEnabled = toml.getBoolean("customText.enable");
+        this.connectionText = toml.getString("customText.connectionText");
+        this.serverChangeText = toml.getString("customText.serverChangeText");
+        this.disconnectionText = toml.getString("customText.disconnectionText");
+        this.chatText = toml.getString("customText.chatText");
     }
 
     private void saveDefaultConfig() throws IOException {
@@ -58,15 +70,28 @@ public class SettingManager {
             if (!aBoolean) logger.warn("Could Not make a new config.toml file.");
         }
         if (!configFile.exists()) {
-            InputStream in = SettingManager.class.getResourceAsStream("/config.toml");
-            assert in != null;
+            newConfig();
+        } else {
+            Toml toml = new Toml().read(new File(workingDirectory, "config.toml"));
+            String v;
             try {
-                Files.copy(in, configFile.toPath());
-            } catch (IOException exception) {
-                throw exception;
-            } finally {
-                in.close();
+                v = toml.getString("version.version");
+                if (v.equals(lastVersion)) {
+                    return;
+                }
+            } catch (Exception ignored) {
             }
+            boolean aBoolean = configFile.delete();
+            if (!aBoolean) logger.warn("Could Not delete old config file.");
+            newConfig();
+        }
+    }
+
+    private void newConfig() throws IOException {
+        InputStream in = SettingManager.class.getResourceAsStream("/config.toml");
+        try (in) {
+            assert in != null;
+            Files.copy(in, configFile.toPath());
         }
     }
 
@@ -94,7 +119,7 @@ public class SettingManager {
      * @return the boolean, i.e. enabled returns true; otherwise, false.
      */
     public boolean isCommandToBroadcastEnabled() {
-        return isCommandToBroadcast;
+        return commandToBroadcastEnabled;
     }
 
     /**
@@ -113,6 +138,51 @@ public class SettingManager {
      */
     public boolean isConnectionTipsEnabled() {
         return connectionTipsEnabled;
+    }
+
+    /**
+     * Is custom text enabled.
+     *
+     * @return the boolean, i.e. enabled returns true; otherwise, false.
+     */
+    public boolean isCustomTextEnabled() {
+        return customTextEnabled;
+    }
+
+    /**
+     * Get Connection Text
+     *
+     * @return the String.
+     */
+    public String getConnectionText() {
+        return connectionText;
+    }
+
+    /**
+     * Get Server Change Text
+     *
+     * @return the String.
+     */
+    public String getServerChangeText() {
+        return serverChangeText;
+    }
+
+    /**
+     * Get Disconnection Text
+     *
+     * @return the String.
+     */
+    public String getDisconnectionText() {
+        return disconnectionText;
+    }
+
+    /**
+     * Get Chat Text
+     *
+     * @return the String.
+     */
+    public String getChatText() {
+        return chatText;
     }
 
 }
