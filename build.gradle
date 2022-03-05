@@ -3,6 +3,7 @@ plugins {
     id 'eclipse'
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
     id 'pmd'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 pmd {
@@ -10,10 +11,9 @@ pmd {
 }
 
 group = 'com.jackdaw'
-version = '2.0.0'
+version = '2.0.1-build-2.1'
 
 repositories {
-    mavenCentral()
     maven {
         name = 'velocitypowered-repo'
         url = 'https://nexus.velocitypowered.com/repository/maven-public/'
@@ -22,13 +22,13 @@ repositories {
         name = "sonatype-oss-snapshots"
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    mavenCentral()
 }
 
 dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.0.0'
     annotationProcessor 'com.velocitypowered:velocity-api:3.0.0'
-    implementation "net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT"
-
+    implementation "net.kyori:adventure-text-minimessage:4.10.0"
 }
 
 def targetJavaVersion = 11
@@ -64,3 +64,9 @@ sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
 
 rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
 project.eclipse.synchronizationTasks(generateTemplates)
+
+shadowJar {
+    dependencies {
+        exclude(dependency('com.velocitypowered:velocity-api:3.0.0'))
+    }
+}

@@ -8,7 +8,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 
 public class ConnectionTips {
@@ -45,27 +45,30 @@ public class ConnectionTips {
         Player player = event.getPlayer();
         String playerName = player.getUsername();
         String server = event.getServer().getServerInfo().getName();
-        String sendMessage;
+        String str;
+        Component sendMessage;
         if (event.getPreviousServer().isPresent()) {
             String previousServer = event.getPreviousServer().get().getServerInfo().getName();
             if (isCustomTextEnabled) {
-                sendMessage = this.serverChangeText.replace("%player%", playerName).replace("%previousServer%", previousServer).replace("%server%", server);
+                str = this.serverChangeText.replace("%player%", playerName).replace("%previousServer%", previousServer).replace("%server%", server);
             } else {
-                sendMessage = playerName + ": [" + previousServer + "] -> [" + server + "]";
+                str = "&7" + playerName + ": [" + previousServer + "] -> [" + server + "]";
             }
-            TextComponent textComponent = Component.text(sendMessage);
+            // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+            sendMessage = MiniMessage.miniMessage().deserialize(str);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
-                s.sendMessage(textComponent);
+                s.sendMessage(sendMessage);
             }
         } else {
             if (isCustomTextEnabled) {
-                sendMessage = this.connectionText.replace("%player%", playerName).replace("%server%", server);
+                str = this.connectionText.replace("%player%", playerName).replace("%server%", server);
             } else {
-                sendMessage = playerName + ": Connected to [" + server + "].";
+                str = "&7" + playerName + ": Connected to [" + server + "].";
             }
-            TextComponent textComponent = Component.text(sendMessage);
+            // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+            sendMessage = MiniMessage.miniMessage().deserialize(str);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
-                s.sendMessage(textComponent);
+                s.sendMessage(sendMessage);
             }
         }
     }
@@ -73,15 +76,17 @@ public class ConnectionTips {
     //note of disconnect server
     private void disconnectNote(@NotNull DisconnectEvent event) {
         String playerName = event.getPlayer().getUsername();
-        String sendMessage;
+        String str;
+        Component sendMessage;
         if (isCustomTextEnabled) {
-            sendMessage = this.disconnectionText.replace("%player%", playerName);
+            str = this.disconnectionText.replace("%player%", playerName);
         } else {
-            sendMessage = playerName + ": Exited the servers.";
+            str = "&7" + playerName + ": Exited the servers.";
         }
-        TextComponent textComponent = Component.text(sendMessage);
+        // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+        sendMessage = MiniMessage.miniMessage().deserialize(str);
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
-            s.sendMessage(textComponent);
+            s.sendMessage(sendMessage);
         }
     }
 }

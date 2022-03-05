@@ -9,7 +9,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -53,23 +53,25 @@ public class Message {
     // broadcast the message
     private void broadcast(Player player, String message) {
         String playerName = player.getUsername();
-        String sendMessage;
+        String str;
+        Component sendMessage;
         // Audience message
         if (player.getCurrentServer().isPresent()) {
             String server = player.getCurrentServer().get().getServerInfo().getName();
             if (this.isCustomTextEnabled) {
-                sendMessage = this.chatText.replace("%player%", playerName).replace("%server%", server) + message;
+                str = this.chatText.replace("%player%", playerName).replace("%server%", server) + message;
             } else {
-                sendMessage = "[" + server + "] <" + playerName + "> " + message;
+                str = "&7[" + server + "] <" + playerName + "> " + message;
             }
         } else {
-            sendMessage = "<" + player.getUsername() + "> " + message;
+            str = "&7<" + player.getUsername() + "> " + message;
         }
-        TextComponent textComponent = Component.text(sendMessage);
+        // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+        sendMessage = MiniMessage.miniMessage().deserialize(str);
         // send message to other server
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
             if (!Objects.equals(s, player.getCurrentServer().get().getServer())) {
-                s.sendMessage(textComponent);
+                s.sendMessage(sendMessage);
             }
         }
     }
