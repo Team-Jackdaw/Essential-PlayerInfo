@@ -24,17 +24,15 @@ Show global players on the TabList.
 
 The most basic cross-server chat function. & Simple connection tips.
 
-![Message1.png][3]
+![customText1.png][3]
 
 ## Optional Features
 
 **Customize your message text**
 
-You can change the custom text in the config file. It could be only set to net text.
+You can change the custom text in the config file. You can use &-codes to color the message.
 
 You can use %player% %server% and %previousServer% to replace the variable.
-
-![customText.png][4]
 
 **Command-to-broadcast**
 
@@ -42,49 +40,41 @@ For those who don't want their servers to be continuous global broadcasts, we pr
 broadcast". Which means the chat messages in these servers would be broadcast only when the beginning of the message
 is "#".
 
-For instance, when someone sent "hello world" in two kind:
-
-![ctb1.png][5]
-
-The players in other servers will receive:
-
-![ctb2.png][6]
-
 ## Config
 
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
     [version]
-        version="v2.0"
-
+    version="v2.0"
+    
     # Global tablist
-        [tabList]
-            enabled=true
-
+    [tabList]
+    enabled=true
+    
     # Global massage
     [message]
-        enabled=true
-        command-to-broadcast=false
-
+    enabled=true
+    command-to-broadcast=false
+    
     # Ping List
     [pingList]
-        enabled=true
-
+    enabled=true
+    
     # Connection Tips
     [connectionTips]
-        enabled=true
-
+    enabled=true
+    
     # Custom Message Setting
     [customText]
-        enable=false
-        # e.g. WDRshadow : Connect to [Server1].
-        connectionText = "%player%: Connect to [%server%]."
-        # e.g. WDRshadow : [Server1] -> [Server2]
-        serverChangeText = "%player%: [%previousServer%] -> [%server%]"
-        # e.g. WDRshadow : Exit the servers.
-        disconnectionText = "%player%: Exit the servers."
-        # e.g. [Server1] <WDRshadow>: Hello World!
-        chatText = "[%server%] <%player%>: "
+    enable=false
+    # e.g. WDRshadow: Connect to [Server1].
+    connectionText = "&7%player%: Connect to [%server%]."
+    # e.g. WDRshadow: [Server1] -> [Server2]
+    serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
+    # e.g. WDRshadow: Exit the servers.
+    disconnectionText = "&7%player%: Exit the servers."
+    # e.g. [Server1] <WDRshadow> Hello World!
+    chatText = "&7[%server%] <%player%> "
 
 ## To do list
 
@@ -92,7 +82,7 @@ The players in other servers will receive:
 
 **2. Let players customize the default server.**
 
-**3. Add an advance way to customize the messages including the colors and commands (By minimessage).**
+**3. Add an advance way to customize the messages including some extra feature (By miniMessage format).**
 
 ## Build
 
@@ -108,10 +98,4 @@ The built jar file will be in build/libs/
 
 [2]: https://cdn.ussjackdaw.com/image/TabList1.png
 
-[3]: https://cdn.ussjackdaw.com/image/Message1.png
-
-[4]: https://cdn.ussjackdaw.com/image/customText.png
-
-[5]: https://cdn.ussjackdaw.com/image/ctb1.png
-
-[6]: https://cdn.ussjackdaw.com/image/ctb2.png
+[3]: https://cdn.ussjackdaw.com/image/customText1.png

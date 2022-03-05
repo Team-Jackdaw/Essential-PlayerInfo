@@ -22,12 +22,12 @@
 
 # Custom Message Setting
 [customText]
-    enable=false
-    # e.g. WDRshadow : Connect to [Server1].
-    connectionText = "%player%: Connect to [%server%]."
-    # e.g. WDRshadow : [Server1] -> [Server2]
-    serverChangeText = "%player%: [%previousServer%] -> [%server%]"
-    # e.g. WDRshadow : Exit the servers.
-    disconnectionText = "%player%: Exit the servers."
-    # e.g. [Server1] <WDRshadow>: Hello World!
-    chatText = "[%server%] <%player%>: "
+enable = false
+# e.g. WDRshadow: Connect to [Server1].
+connectionText = "&7%player%: Connect to [%server%]."
+# e.g. WDRshadow: [Server1] -> [Server2]
+serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
+# e.g. WDRshadow: Exit the servers.
+disconnectionText = "&7%player%: Exit the servers."
+# e.g. [Server1] <WDRshadow> Hello World!
+chatText = "&7[%server%] <%player%> "
