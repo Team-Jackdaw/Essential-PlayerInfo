@@ -1,6 +1,7 @@
 package com.jackdaw.essentialinfo.module.message;
 
 import com.google.inject.Inject;
+import com.jackdaw.essentialinfo.configuration.SettingManager;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
@@ -20,13 +21,17 @@ public class Message {
     private final Logger logger;
     private final Parser parser = MessageParser.getParser();
     private final boolean isCommandToBroadcast;
+    private final boolean isCustomTextEnabled;
+    private final String chatText;
 
     // connect the module to the plugin and server
     @Inject
-    public Message(ProxyServer proxyServer, Logger logger, boolean commandToBroadcast) {
-        this.isCommandToBroadcast = commandToBroadcast;
+    public Message(ProxyServer proxyServer, Logger logger, SettingManager setting) {
+        this.isCommandToBroadcast = setting.isCommandToBroadcastEnabled();
         this.proxyServer = proxyServer;
         this.logger = logger;
+        this.isCustomTextEnabled = setting.isCustomTextEnabled();
+        this.chatText = setting.getChatText();
     }
 
     // listener of player chat
@@ -47,13 +52,18 @@ public class Message {
 
     // broadcast the message
     private void broadcast(Player player, String message) {
+        String playerName = player.getUsername();
         String sendMessage;
         // Audience message
         if (player.getCurrentServer().isPresent()) {
-            sendMessage = "[" + player.getCurrentServer().get().getServerInfo().getName() + "] <" + player.getUsername() + "> " + message;
+            String server = player.getCurrentServer().get().getServerInfo().getName();
+            if (this.isCustomTextEnabled) {
+                sendMessage = this.chatText.replace("%player%", playerName).replace("%server%", server) + message;
+            } else {
+                sendMessage = "[" + server + "] <" + playerName + "> " + message;
+            }
         } else {
             sendMessage = "<" + player.getUsername() + "> " + message;
-            this.logger.warn("Could not find " + player.getUsername() + "'s current server.");
         }
         TextComponent textComponent = Component.text(sendMessage);
         // send message to other server

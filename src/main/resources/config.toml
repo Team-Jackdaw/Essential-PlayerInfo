@@ -1,4 +1,8 @@
 # essential-playerinfo
+# Configuration version. !Please do not change this option!
+[version]
+    version="v2.0"
+
 # Global tablist
 [tabList]
     enabled=true
@@ -16,3 +20,14 @@
 [connectionTips]
     enabled=true
 
+# Custom Message Setting
+[customText]
+    enable=false
+    # e.g. WDRshadow : Connect to [Server1].
+    connectionText = "%player%: Connect to [%server%]."
+    # e.g. WDRshadow : [Server1] -> [Server2]
+    serverChangeText = "%player%: [%previousServer%] -> [%server%]"
+    # e.g. WDRshadow : Exit the servers.
+    disconnectionText = "%player%: Exit the servers."
+    # e.g. [Server1] <WDRshadow>: Hello World!
+    chatText = "[%server%] <%player%>: "
