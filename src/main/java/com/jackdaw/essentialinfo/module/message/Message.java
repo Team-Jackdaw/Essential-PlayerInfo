@@ -9,7 +9,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -66,8 +66,8 @@ public class Message {
         } else {
             str = "&7<" + player.getUsername() + "> " + message;
         }
-        // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
-        sendMessage = MiniMessage.miniMessage().deserialize(str);
+        sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+        // sendMessage = MiniMessage.miniMessage().deserialize(str);
         // send message to other server
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
             if (!Objects.equals(s, player.getCurrentServer().get().getServer())) {

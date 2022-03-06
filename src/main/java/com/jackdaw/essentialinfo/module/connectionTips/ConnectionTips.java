@@ -8,7 +8,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 public class ConnectionTips {
@@ -54,8 +54,8 @@ public class ConnectionTips {
             } else {
                 str = "&7" + playerName + ": [" + previousServer + "] -> [" + server + "]";
             }
-            // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
-            sendMessage = MiniMessage.miniMessage().deserialize(str);
+            sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+            // sendMessage = MiniMessage.miniMessage().deserialize(str);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
                 s.sendMessage(sendMessage);
             }
@@ -65,8 +65,8 @@ public class ConnectionTips {
             } else {
                 str = "&7" + playerName + ": Connected to [" + server + "].";
             }
-            // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
-            sendMessage = MiniMessage.miniMessage().deserialize(str);
+            sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+            // sendMessage = MiniMessage.miniMessage().deserialize(str);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
                 s.sendMessage(sendMessage);
             }
@@ -83,8 +83,8 @@ public class ConnectionTips {
         } else {
             str = "&7" + playerName + ": Exited the servers.";
         }
-        // sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
-        sendMessage = MiniMessage.miniMessage().deserialize(str);
+        sendMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(str);
+        // sendMessage = MiniMessage.miniMessage().deserialize(str);
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
             s.sendMessage(sendMessage);
         }

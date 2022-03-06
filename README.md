@@ -45,36 +45,36 @@ is "#".
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
     [version]
-    version="v2.0"
+        version="v2.0"
     
     # Global tablist
     [tabList]
-    enabled=true
+        enabled=true
     
     # Global massage
     [message]
-    enabled=true
-    command-to-broadcast=false
+        enabled=true
+        command-to-broadcast=false
     
     # Ping List
     [pingList]
-    enabled=true
+        enabled=true
     
     # Connection Tips
     [connectionTips]
-    enabled=true
+        enabled=true
     
     # Custom Message Setting
     [customText]
-    enable=false
-    # e.g. WDRshadow : Connect to [Server1].
-    connectionText = "<gray>%player%: Connect to <u><hover:show_text:'Click to jump'><click:run_command:'server %server%'>[%server%]</click></hover></u>."
-    # e.g. WDRshadow : [Server1] -> [Server2]
-    serverChangeText = "<gray>%player%: <u><hover:show_text:'Click to jump'><click:run_command:'server %previousServer%'>[%previousServer%]</click></hover></u> -> <u><hover:show_text:'Click to jump'><click:run_command:'server %server%'>[%server%]</click></hover></u>"
-    # e.g. WDRshadow : Exit the servers.
-    disconnectionText = "<gray>%player%: Exit the servers."
-    # e.g. [Server1] <WDRshadow> Hello World!
-    chatText = "<gray><u><hover:show_text:'Click to jump'><click:run_command:'server %server%'>[%server%]</click></hover></u> \\<%player%> "
+        enable=false
+        # e.g. WDRshadow: Connect to [Server1].
+        connectionText = "&7%player%: Connect to [%server%]."
+        # e.g. WDRshadow: [Server1] -> [Server2]
+        serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
+        # e.g. WDRshadow: Exit the servers.
+        disconnectionText = "&7%player%: Exit the servers."
+        # e.g. [Server1] <WDRshadow> Hello World!
+        chatText = "&7[%server%] <%player%> "
 
 ## To do list
 
