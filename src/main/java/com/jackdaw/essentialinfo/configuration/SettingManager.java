@@ -22,7 +22,7 @@ public class SettingManager {
     private final File workingDirectory;
     private final File configFile;
 
-    private static final String lastVersion = "v2.0";
+    private static final String lastVersion = "v3.0"; // use for confirming the setting version is the same with the plugin
 
     private boolean tabListEnabled;
     private boolean messageEnabled;
@@ -30,6 +30,7 @@ public class SettingManager {
     private boolean connectionTipsEnabled;
     private boolean commandToBroadcastEnabled;
     private boolean customTextEnabled;
+    private boolean rememberMeEnable;
     private String connectionText;
     private String serverChangeText;
     private String disconnectionText;
@@ -58,6 +59,7 @@ public class SettingManager {
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
         this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
         this.customTextEnabled = toml.getBoolean("customText.enable");
+        this.rememberMeEnable = toml.getBoolean("rememberMe.enable");
         this.connectionText = toml.getString("customText.connectionText");
         this.serverChangeText = toml.getString("customText.serverChangeText");
         this.disconnectionText = toml.getString("customText.disconnectionText");
@@ -69,9 +71,7 @@ public class SettingManager {
             boolean aBoolean = workingDirectory.mkdir();
             if (!aBoolean) logger.warn("Could Not make a new config.toml file.");
         }
-        if (!configFile.exists()) {
-            newConfig();
-        } else {
+        if (configFile.exists()) {
             Toml toml = new Toml().read(new File(workingDirectory, "config.toml"));
             String v;
             try {
@@ -83,8 +83,8 @@ public class SettingManager {
             }
             boolean aBoolean = configFile.delete();
             if (!aBoolean) logger.warn("Could Not delete old config file.");
-            newConfig();
         }
+        newConfig();
     }
 
     private void newConfig() throws IOException {
@@ -147,6 +147,15 @@ public class SettingManager {
      */
     public boolean isCustomTextEnabled() {
         return customTextEnabled;
+    }
+
+    /**
+     * Is remember my previous server enabled.
+     *
+     * @return the boolean, i.e. enabled returns true; otherwise, false.
+     */
+    public boolean isRememberMeEnabled() {
+        return rememberMeEnable;
     }
 
     /**

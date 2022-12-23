@@ -5,12 +5,16 @@ import com.jackdaw.essentialinfo.configuration.SettingManager;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
+import com.jackdaw.essentialinfo.module.rememberMe.RememberMe;
 import com.jackdaw.essentialinfo.module.tablist.TabList;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -36,6 +40,14 @@ public class EssentialInfo {
     @Inject
     private @DataDirectory
     Path dataDirectory;
+
+    private static final MiniMessage miniMessage = MiniMessage.builder()
+            .tags(TagResolver.builder()
+                    .resolver(StandardTags.color())
+                    .resolver(StandardTags.decorations())
+                    .build()
+            )
+            .build();
 
     // connect to the server and logger
     @Inject
@@ -71,6 +83,11 @@ public class EssentialInfo {
             this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer, setting));
             logger.info("Loaded ConnectionTips.");
         }
+
+        if (setting.isRememberMeEnabled()) {
+            this.proxyServer.getEventManager().register(this, new RememberMe(this.proxyServer, logger));
+            logger.info("Loaded RememberMe.");
+        }
     }
 
     @Nullable
@@ -83,6 +100,10 @@ public class EssentialInfo {
             return null;
         }
         return setting;
+    }
+
+    public static MiniMessage miniMessageBuilder(){
+        return miniMessage;
     }
 }
 

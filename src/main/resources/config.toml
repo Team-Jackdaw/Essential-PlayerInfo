@@ -1,7 +1,7 @@
 # essential-playerinfo
 # Configuration version. !Please do not change this option!
 [version]
-    version="v2.0"
+    version="v3.0"
 
 # Global tablist
 [tabList]
@@ -20,9 +20,15 @@
 [connectionTips]
     enabled=true
 
+# Remember me
+[rememberMe]
+    enable=true
+
 # Custom Message Setting
 [customText]
 enable = false
+# custom word, if you do not want to send anything in a option, just leave it blank with ""
+# e.g. connectionText = ""
 # e.g. WDRshadow: Connect to [Server1].
 connectionText = "&7%player%: Connect to [%server%]."
 # e.g. WDRshadow: [Server1] -> [Server2]
