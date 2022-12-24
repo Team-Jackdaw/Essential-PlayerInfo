@@ -74,7 +74,11 @@ public class EssentialInfo {
         }
 
         if (setting.isRememberMeEnabled()) {
-            this.proxyServer.getEventManager().register(this, new RememberMe(this.proxyServer, logger));
+            try {
+                this.proxyServer.getEventManager().register(this, new RememberMe(dataDirectory.toFile(), this.proxyServer, logger));
+            } catch (IOException ioException) {
+                System.out.println(ioException.getMessage());
+            }
             logger.info("Loaded RememberMe.");
         }
     }

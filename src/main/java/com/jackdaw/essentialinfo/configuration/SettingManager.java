@@ -15,7 +15,7 @@ import java.nio.file.Files;
  * Configure the setting if a specific module is enable or disable.
  *
  * @author WDRshadow, Lokeyli
- * @version 0.0.3
+ * @version 3.0
  */
 public class SettingManager {
     private final Logger logger;
