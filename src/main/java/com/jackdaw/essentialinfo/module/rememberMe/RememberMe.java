@@ -14,8 +14,6 @@ public class RememberMe {
     // class server
     private final ProxyServer proxyServer;
     private final Logger logger;
-    private final File workingDirectory;
-    private final File configFile;
 
 
     // connect the module to the plugin and server

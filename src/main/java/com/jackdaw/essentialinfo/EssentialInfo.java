@@ -12,9 +12,6 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -40,14 +37,6 @@ public class EssentialInfo {
     @Inject
     private @DataDirectory
     Path dataDirectory;
-
-    private static final MiniMessage miniMessage = MiniMessage.builder()
-            .tags(TagResolver.builder()
-                    .resolver(StandardTags.color())
-                    .resolver(StandardTags.decorations())
-                    .build()
-            )
-            .build();
 
     // connect to the server and logger
     @Inject
@@ -100,10 +89,6 @@ public class EssentialInfo {
             return null;
         }
         return setting;
-    }
-
-    public static MiniMessage miniMessageBuilder(){
-        return miniMessage;
     }
 }
 
