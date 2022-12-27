@@ -27,8 +27,6 @@
 # Custom Message Setting
 [customText]
 enable = false
-# custom word, if you do not want to send anything in a option, just leave it blank with ""
-# e.g. connectionText = ""
 # e.g. WDRshadow: Connect to [Server1].
 connectionText = "&7%player%: Connect to [%server%]."
 # e.g. WDRshadow: [Server1] -> [Server2]

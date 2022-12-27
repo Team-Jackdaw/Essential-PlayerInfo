@@ -45,24 +45,28 @@ is "#".
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
     [version]
-    version="v2.0"
+        version="v2.0"
     
     # Global tablist
     [tabList]
-    enabled=true
+        enabled=true
     
     # Global massage
     [message]
-    enabled=true
-    command-to-broadcast=false
+        enabled=true
+        command-to-broadcast=false
     
     # Ping List
     [pingList]
-    enabled=true
+        enabled=true
     
     # Connection Tips
     [connectionTips]
-    enabled=true
+        enabled=true
+
+    # Remember me
+    [rememberMe]
+        enable=true
     
     # Custom Message Setting
     [customText]

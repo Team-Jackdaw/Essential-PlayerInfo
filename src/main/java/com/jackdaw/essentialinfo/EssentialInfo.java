@@ -54,23 +54,23 @@ public class EssentialInfo {
         if (setting == null) return;
         if (setting.isTabListEnabled()) {
             this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
-            logger.info("Loaded TabList.");
+            logger.info("Main: Loaded TabList.");
         }
 
         if (setting.isMessageEnabled()) {
             this.proxyServer.getEventManager().register(
                     this, new Message(this.proxyServer, logger, setting));
-            logger.info("Loaded Message.");
+            logger.info("Main: Loaded Message.");
         }
 
         if (setting.isPingListEnabled()) {
             this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
-            logger.info("Loaded PingList.");
+            logger.info("Main: Loaded PingList.");
         }
 
         if (setting.isConnectionTipsEnabled()) {
             this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer, setting));
-            logger.info("Loaded ConnectionTips.");
+            logger.info("Main: Loaded ConnectionTips.");
         }
 
         if (setting.isRememberMeEnabled()) {
@@ -79,7 +79,7 @@ public class EssentialInfo {
             } catch (IOException ioException) {
                 System.out.println(ioException.getMessage());
             }
-            logger.info("Loaded RememberMe.");
+            logger.info("Main: Loaded RememberMe.");
         }
     }
 
