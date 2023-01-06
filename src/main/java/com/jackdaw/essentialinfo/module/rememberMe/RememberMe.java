@@ -1,5 +1,8 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
+import com.jackdaw.essentialinfo.API.userInfo.UserInfoUtils;
+import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
@@ -24,6 +27,7 @@ public class RememberMe {
         this.proxyServer = proxyServer;
         this.logger = logger;
         checkFolder();
+        commandSet();
     }
 
     // check whether the /user folder is existed.
@@ -35,9 +39,17 @@ public class RememberMe {
         }
     }
 
+    //command manager, register the command "e-info" or "ess".
+    private void commandSet() {
+        CommandManager commandManager = proxyServer.getCommandManager();
+        CommandMeta commandMeta = commandManager.metaBuilder("e-info").aliases("ess").build();
+        CommandSet commandSet = new CommandSet(this);
+        commandManager.register(commandMeta, commandSet);
+    }
+
     // open UserInfo file and record a information.
-    private UserInfoParser userInfo(Player player) {
-        return new UserInfoParser(workingDirectory, logger, player);
+    private UserInfoUtils userInfo(Player player) {
+        return new UserInfoUtils(workingDirectory, logger, player);
     }
 
     // listener of player connection and connect to the previous or default server
@@ -57,7 +69,7 @@ public class RememberMe {
     // listener of player disconnection and remember the last server the player exit
     @Subscribe
     public void onServerConnected(ServerConnectedEvent event) {
-        UserInfoParser userInfo = userInfo(event.getPlayer());
+        UserInfoUtils userInfo = userInfo(event.getPlayer());
         if (!userInfo.getUserData().getDefaultMde()) {
             userInfo.setUserServer(event.getServer().getServerInfo().getName());
         }
@@ -65,14 +77,14 @@ public class RememberMe {
 
     // set the default server by command
     public void setServer(String serverName, Player player) {
-        UserInfoParser userInfo = userInfo(player);
+        UserInfoUtils userInfo = userInfo(player);
         userInfo.setDefaultMode(true);
         userInfo.setUserServer(serverName);
     }
 
     // set the default mode by command
     public void setMode(boolean mode, Player player) {
-        UserInfoParser userInfo = userInfo(player);
+        UserInfoUtils userInfo = userInfo(player);
         userInfo.setDefaultMode(mode);
         if (player.getCurrentServer().isPresent()) {
             userInfo.setUserServer(player.getCurrentServer().get().getServerInfo().getName());

@@ -1,4 +1,4 @@
-package com.jackdaw.essentialinfo.module.rememberMe;
+package com.jackdaw.essentialinfo.API.userInfo;
 
 import com.velocitypowered.api.proxy.Player;
 import org.slf4j.Logger;
@@ -12,21 +12,20 @@ import java.util.HashMap;
  * <p>
  * Read and Write the data file with server information, each file just remember one player information.
  *
- * @author WDRshadow
  */
-public class UserInfoParser {
+public final class UserInfoUtils {
     private final Logger logger;
     private final File theFile;
-    private final UserData userData;
+    private final UserInfo userInfo;
 
-    public UserInfoParser(File workingDirectory, Logger logger, Player player) {
+    public UserInfoUtils(File workingDirectory, Logger logger, Player player) {
         this.logger = logger;
-        this.userData = new UserData(player.getUsername(), player.getUniqueId().toString(), false, null);
+        this.userInfo = new UserInfo(player.getUsername(), player.getUniqueId().toString(), false, null);
         this.theFile = new File(workingDirectory, player.getUniqueId().toString() + ".yml");
         readOrInitialize();
     }
 
-    // read or create Files.
+    // read or initialize the user data file
     public void readOrInitialize() {
         if (!theFile.exists()) {
             writeFile();
@@ -34,15 +33,17 @@ public class UserInfoParser {
         }
         try {
             HashMap userData = YamlUtils.readFile(theFile);
-            this.userData.setDefaultMode((Boolean) userData.get("defaultMode"));
-            this.userData.setServer((String) userData.get("server"));
+            this.userInfo.setDefaultMode((Boolean) userData.get("defaultMode"));
+            this.userInfo.setServer((String) userData.get("server"));
         } catch (FileNotFoundException e) {
             logger.error("RememberMe: Can't open the user data file.");
         }
     }
 
 
-    // confirm and write the data to file
+    /**
+     * Confirm and write the file as the UserInfo class record.
+     */
     private void writeFile() {
         try {
             if (!theFile.exists()) {
@@ -51,27 +52,39 @@ public class UserInfoParser {
                 }
             }
             HashMap userData = new HashMap();
-            userData.put("name", this.userData.getName());
-            userData.put("uuid", this.userData.getUuid());
-            userData.put("defaultMode", this.userData.getDefaultMde());
-            userData.put("server", this.userData.getServer());
+            userData.put("name", this.userInfo.getName());
+            userData.put("uuid", this.userInfo.getUuid());
+            userData.put("defaultMode", this.userInfo.getDefaultMde());
+            userData.put("server", this.userInfo.getServer());
             YamlUtils.writeFile(theFile, userData);
         } catch (IOException e) {
             this.logger.error("RememberMe: Can't write the user data file.");
         }
     }
 
-    public UserData getUserData() {
-        return userData;
+    /**
+     * Get User information from data file.
+     * @return User information.
+     */
+    public UserInfo getUserData() {
+        return userInfo;
     }
 
+    /**
+     * Set user's default server.
+     * @param server Default server.
+     */
     public void setUserServer(String server) {
-        this.userData.setServer(server);
+        this.userInfo.setServer(server);
         writeFile();
     }
 
+    /**
+     * Set user's default mode.
+     * @param defaultMode Default mode.
+     */
     public void setDefaultMode(boolean defaultMode) {
-        this.userData.setDefaultMode(defaultMode);
+        this.userInfo.setDefaultMode(defaultMode);
         writeFile();
     }
 }

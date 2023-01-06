@@ -1,12 +1,19 @@
-package com.jackdaw.essentialinfo.module.rememberMe;
+package com.jackdaw.essentialinfo.API.userInfo;
 
-public class UserData {
-    private String name;
-    private String uuid;
+public class UserInfo {
+    private final String name;
+    private final String uuid;
     private boolean defaultMode;
     private String server;
 
-    public UserData(String name, String uuid, boolean defaultMode, String server){
+    /**
+     * A user's information class. To initialize the class, you need the parameters below.
+     * @param name User's name.
+     * @param uuid User's uuid.
+     * @param defaultMode User's default mode.
+     * @param server User's default server.
+     */
+    public UserInfo(String name, String uuid, boolean defaultMode, String server){
         this.name = name;
         this.uuid = uuid;
         this.defaultMode = defaultMode;
@@ -54,20 +61,6 @@ public class UserData {
      */
     public void setDefaultMode(boolean defaultMode) {
         this.defaultMode = defaultMode;
-    }
-
-    /**
-     * Set the player name from the data file.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Set the player uuid from the data file.
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     /**

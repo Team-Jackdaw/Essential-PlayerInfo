@@ -1,7 +1,7 @@
 package com.jackdaw.essentialinfo.module.message;
 
 import com.google.inject.Inject;
-import com.jackdaw.essentialinfo.configuration.SettingManager;
+import com.jackdaw.essentialinfo.API.configuration.SettingManager;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;

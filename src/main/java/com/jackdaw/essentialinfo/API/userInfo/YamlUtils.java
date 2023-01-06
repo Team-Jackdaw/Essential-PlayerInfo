@@ -1,4 +1,4 @@
-package com.jackdaw.essentialinfo.module.rememberMe;
+package com.jackdaw.essentialinfo.API.userInfo;
 
 import java.io.*;
 import java.util.HashMap;
