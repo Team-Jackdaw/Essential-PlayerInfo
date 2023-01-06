@@ -1,7 +1,7 @@
 package com.jackdaw.essentialinfo;
 
 import com.google.inject.Inject;
-import com.jackdaw.essentialinfo.API.configuration.SettingManager;
+import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;

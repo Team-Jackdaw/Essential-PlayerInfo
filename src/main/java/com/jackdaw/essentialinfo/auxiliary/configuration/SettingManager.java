@@ -1,4 +1,4 @@
-package com.jackdaw.essentialinfo.API.configuration;
+package com.jackdaw.essentialinfo.auxiliary.configuration;
 
 import com.moandjiezana.toml.Toml;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.jackdaw.essentialinfo.API.userInfo;
+package com.jackdaw.essentialinfo.auxiliary.userInfo;
 
 import com.velocitypowered.api.proxy.Player;
 import org.slf4j.Logger;

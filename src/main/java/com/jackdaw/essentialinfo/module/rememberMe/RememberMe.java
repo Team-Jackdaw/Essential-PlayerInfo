@@ -1,6 +1,6 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
-import com.jackdaw.essentialinfo.API.userInfo.UserInfoUtils;
+import com.jackdaw.essentialinfo.auxiliary.userInfo.UserInfoUtils;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.event.Subscribe;
@@ -39,11 +39,11 @@ public class RememberMe {
         }
     }
 
-    //command manager, register the command "e-info" or "ess".
+    //command manager, register the command "remember".
     private void commandSet() {
         CommandManager commandManager = proxyServer.getCommandManager();
-        CommandMeta commandMeta = commandManager.metaBuilder("e-info").aliases("ess").build();
-        CommandSet commandSet = new CommandSet(this);
+        CommandMeta commandMeta = commandManager.metaBuilder("remember").build();
+        CommandSet commandSet = new CommandSet(proxyServer, this);
         commandManager.register(commandMeta, commandSet);
     }
 

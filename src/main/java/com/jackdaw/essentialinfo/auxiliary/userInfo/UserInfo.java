@@ -1,4 +1,4 @@
-package com.jackdaw.essentialinfo.API.userInfo;
+package com.jackdaw.essentialinfo.auxiliary.userInfo;
 
 public class UserInfo {
     private final String name;

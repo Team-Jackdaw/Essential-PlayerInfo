@@ -1,4 +1,4 @@
-package com.jackdaw.essentialinfo.API.userInfo;
+package com.jackdaw.essentialinfo.auxiliary.userInfo;
 
 import java.io.*;
 import java.util.HashMap;

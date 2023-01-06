@@ -1,6 +1,6 @@
 package com.jackdaw.essentialinfo.module.connectionTips;
 
-import com.jackdaw.essentialinfo.API.configuration.SettingManager;
+import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;

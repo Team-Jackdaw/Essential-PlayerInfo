@@ -4,7 +4,7 @@
 
 This is a very lightweight plugin for Velocity proxy.
 
-Used API of Velocity 3.1.0, so it may only support Velocity version 3.1.0 and above, and other versions have not been tested.
+Used API of Velocity 3.2.0, so it may only support Velocity version 3.1.0 and above, and other versions have not been tested.
 
 ## Core Features
 
@@ -26,13 +26,31 @@ The most basic cross-server chat function. & Simple connection tips.
 
 ![customText1.png][3]
 
+**Remember my initial connecting server**
+
+You can now let your players set the initial connecting server as they like. The default setting is "remember their last connected server".
+
+Players can use command to set the mode and server.
+
+- Set default mode
+  - Description: If set to `true`, players will connect to a specific server every time when they connect to the proxy. This initial server can be set by another command.
+    If set to `false`, players will connect to the server they last exit.
+  - Usage: `/remember mode <true, false>`
+  - Default: `false`
+
+
+- Set initial server
+    - Description: Only work if the default mode is `true`. Set the initial connecting server.
+    - Usage: `/remember server <servername>`
+    - Default: `null` (If null, players will connect to the default server of the proxy)
+    
 ## Optional Features
 
 **Customize your message text**
 
 You can change the custom text in the config file. You can use &-codes to color the message.
 
-You can use %player% %server% and %previousServer% to replace the variable.
+You can use `%player%` `%server%` and `%previousServer%` to replace the variable.
 
 **Command-to-broadcast**
 
@@ -82,11 +100,13 @@ is "#".
 
 ## To do list
 
-**1. Get the server list and provide a way to click to switch.**
+- [] Get the server list and provide a way to click to switch.
 
-**2. Let players customize the default server.**
+- [] Add an advance way to customize the messages including some extra feature (By `miniMessage` format).
 
-**3. Add an advance way to customize the messages including some extra feature (By miniMessage format).**
+## Notes
+
+Message authentication has been updated to the new version (1.19 or higher) of Minecraft. To avoid surprises with non-online authentication servers, you can set `enable-secure-profile` to `false` in the `server.properties` of each server.
 
 ## Build
 
