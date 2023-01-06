@@ -39,11 +39,11 @@ public class RememberMe {
         }
     }
 
-    //command manager, register the command "e-info" or "ess".
+    //command manager, register the command "remember".
     private void commandSet() {
         CommandManager commandManager = proxyServer.getCommandManager();
-        CommandMeta commandMeta = commandManager.metaBuilder("e-info").aliases("ess").build();
-        CommandSet commandSet = new CommandSet(this);
+        CommandMeta commandMeta = commandManager.metaBuilder("remember").build();
+        CommandSet commandSet = new CommandSet(proxyServer, this);
         commandManager.register(commandMeta, commandSet);
     }
 
