@@ -17,8 +17,7 @@ import java.util.HashMap;
 public class UserInfoParser {
     private final Logger logger;
     private final File theFile;
-
-    private UserData userData;
+    private final UserData userData;
 
     public UserInfoParser(File workingDirectory, Logger logger, Player player) {
         this.logger = logger;
@@ -62,12 +61,17 @@ public class UserInfoParser {
         }
     }
 
-    public UserData getUserData(){
+    public UserData getUserData() {
         return userData;
     }
 
-    public void setUserServer(String server){
+    public void setUserServer(String server) {
         this.userData.setServer(server);
+        writeFile();
+    }
+
+    public void setDefaultMode(boolean defaultMode) {
+        this.userData.setDefaultMode(defaultMode);
         writeFile();
     }
 }

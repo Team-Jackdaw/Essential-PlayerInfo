@@ -8,17 +8,17 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.DumperOptions.FlowStyle;
 
-public class YamlUtils {
+public final class YamlUtils {
     public YamlUtils() {
     }
 
     public static HashMap readFile(File file) throws FileNotFoundException {
-            Yaml yaml = new Yaml();
-            Map ret;
-            try {
-                ret = yaml.load(new FileReader(file));
-            } catch (FileNotFoundException e) {
-                ret = null;
+        Yaml yaml = new Yaml();
+        Map ret;
+        try {
+            ret = yaml.load(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            ret = null;
             }
             if (ret == null)
                 ret = new HashMap();

@@ -64,8 +64,18 @@ public class RememberMe {
     }
 
     // set the default server by command
-    // @Subscribe
-    // public void onCommandSetDefaultServer(CommandExecuteEvent event) {
-    //
-    // }
+    public void setServer(String serverName, Player player) {
+        UserInfoParser userInfo = userInfo(player);
+        userInfo.setDefaultMode(true);
+        userInfo.setUserServer(serverName);
+    }
+
+    // set the default mode by command
+    public void setMode(boolean mode, Player player) {
+        UserInfoParser userInfo = userInfo(player);
+        userInfo.setDefaultMode(mode);
+        if (player.getCurrentServer().isPresent()) {
+            userInfo.setUserServer(player.getCurrentServer().get().getServerInfo().getName());
+        } else userInfo.setUserServer(null);
+    }
 }

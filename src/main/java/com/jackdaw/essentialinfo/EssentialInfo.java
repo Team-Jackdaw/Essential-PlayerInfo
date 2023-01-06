@@ -1,12 +1,16 @@
 package com.jackdaw.essentialinfo;
 
 import com.google.inject.Inject;
+import com.jackdaw.essentialinfo.command.Command;
 import com.jackdaw.essentialinfo.configuration.SettingManager;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
 import com.jackdaw.essentialinfo.module.rememberMe.RememberMe;
 import com.jackdaw.essentialinfo.module.tablist.TabList;
+import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.command.CommandMeta;
+import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -15,6 +19,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -49,9 +54,14 @@ public class EssentialInfo {
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        // get config
+        // load command manager
+        commandSet();
+        // load setting config
         SettingManager setting = getSettingManager();
-        if (setting == null) return;
+        if (setting == null) {
+            logger.error("Main: Can't load config file.");
+            return;
+        }
         if (setting.isTabListEnabled()) {
             this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
             logger.info("Main: Loaded TabList.");
@@ -93,6 +103,14 @@ public class EssentialInfo {
             return null;
         }
         return setting;
+    }
+
+    //command manager
+    private void commandSet() {
+        CommandManager commandManager = proxyServer.getCommandManager();
+        CommandMeta commandMeta = commandManager.metaBuilder("e-info").aliases("ess").build();
+        SimpleCommand simpleCommand = new Command();
+        commandManager.register(commandMeta, simpleCommand);
     }
 }
 
