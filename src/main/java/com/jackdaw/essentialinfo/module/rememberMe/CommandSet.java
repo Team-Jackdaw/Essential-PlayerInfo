@@ -1,15 +1,16 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
-import com.jackdaw.essentialinfo.auxiliary.command.Command;
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.Component;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public final class CommandSet implements Command {
+public final class CommandSet implements SimpleCommand {
 
     private final RememberMe rememberMe;
     private final ProxyServer proxyServer;
@@ -20,10 +21,19 @@ public final class CommandSet implements Command {
     }
 
     @Override
-    public void action(CommandSource commandSource, String[] args) {
+    public void execute(Invocation invocation) {
+        CommandSource source = invocation.source();
+        String[] args = invocation.arguments();
+        if (invocation.arguments().length < 2) {
+            source.sendMessage(Component.text(String.join(" "
+                    , "This is RememberMe module of Essential-PlayerInfo plugin. \n"
+                    , "You can use `/remember mode <true, false>` or \n "
+                    , "`/remember server <servername>` to set your default server.")));
+            return;
+        }
         String command = args[0];
         String parameter = args[1];
-        Player player = (Player) commandSource;
+        Player player = (Player) source;
         if (command.equals("mode")) {
             rememberMe.setMode(Boolean.parseBoolean(parameter), player);
         }
@@ -32,29 +42,35 @@ public final class CommandSet implements Command {
         }
     }
 
-    // still have bug, but the command work.
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        if (invocation.arguments().length <= 1) {
-            if(invocation.arguments().length == 1){
-                if(invocation.arguments()[0].equals("server")){
-                    return CompletableFuture.completedFuture(proxyServer
-                            .getAllServers()
-                            .stream()
-                            .map(registeredServer -> registeredServer
-                                    .getServerInfo()
-                                    .getName())
-                            .filter(s -> s.startsWith(invocation.arguments()[0]))
-                            .collect(Collectors.toList()));
-                }
-                if(invocation.arguments()[0].equals("mode")){
-                    return CompletableFuture.completedFuture(List.of("true", "false")
-                            .stream()
-                            .filter(s -> s.startsWith(invocation.arguments()[0]))
-                            .collect(Collectors.toList()));
-                }
-            }
+        String[] currentArgs = invocation.arguments();
+        List<String> suggest;
+        if (currentArgs.length == 0) {
             return CompletableFuture.completedFuture(List.of("server", "mode"));
+        } else if (currentArgs.length == 1) {
+            suggest = List.of("server", "mode");
+            return CompletableFuture.completedFuture(suggest
+                    .stream()
+                    .filter(s -> s.startsWith(invocation.arguments()[0]))
+                    .collect(Collectors.toList()));
+        } else if(currentArgs.length == 2) {
+            if(currentArgs[0].equals("server")){
+                suggest = proxyServer
+                        .getAllServers()
+                        .stream()
+                        .map(registeredServer -> registeredServer
+                                .getServerInfo()
+                                .getName())
+                        .collect(Collectors.toList());
+            } else if(currentArgs[0].equals("mode")){
+                suggest = List.of("true", "false");
+            } else suggest = List.of();
+
+            return CompletableFuture.completedFuture(suggest
+                    .stream()
+                    .filter(s -> s.startsWith(invocation.arguments()[1]))
+                    .collect(Collectors.toList()));
         } else return CompletableFuture.completedFuture(List.of());
     }
 }

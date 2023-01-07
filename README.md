@@ -60,10 +60,14 @@ is "#".
 
 ## Config
 
+**Notes**
+
+ If you update from an old version, your config file will be recreated, and your setting will be reset to default.
+
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
     [version]
-        version="v2.0"
+        version="v3.0"
     
     # Global tablist
     [tabList]
@@ -88,15 +92,11 @@ is "#".
     
     # Custom Message Setting
     [customText]
-    enable=false
-    # e.g. WDRshadow: Connect to [Server1].
-    connectionText = "&7%player%: Connect to [%server%]."
-    # e.g. WDRshadow: [Server1] -> [Server2]
-    serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
-    # e.g. WDRshadow: Exit the servers.
-    disconnectionText = "&7%player%: Exit the servers."
-    # e.g. [Server1] <WDRshadow> Hello World!
-    chatText = "&7[%server%] <%player%> "
+      enable=false
+      connectionText = "&7%player%: Connect to [%server%]."
+      serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
+      isconnectionText = "&7%player%: Exit the servers."
+      chatText = "&7[%server%] <%player%> "
 
 ## To do list
 
