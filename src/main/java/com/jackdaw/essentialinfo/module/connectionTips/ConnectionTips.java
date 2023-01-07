@@ -51,7 +51,7 @@ public class ConnectionTips {
             if (isCustomTextEnabled) {
                 sendMessage = this.serverChangeText.replace("%player%", playerName).replace("%previousServer%", previousServer).replace("%server%", server);
             } else {
-                sendMessage = playerName + ": [" + previousServer + "] -> [" + server + "]";
+                sendMessage = "&7" + playerName + ": [" + previousServer + "] -> [" + server + "]";
             }
             TextComponent textComponent = Component.text(sendMessage);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
@@ -61,7 +61,7 @@ public class ConnectionTips {
             if (isCustomTextEnabled) {
                 sendMessage = this.connectionText.replace("%player%", playerName).replace("%server%", server);
             } else {
-                sendMessage = playerName + ": Connected to [" + server + "].";
+                sendMessage = "&7" + playerName + ": Connected to [" + server + "].";
             }
             TextComponent textComponent = Component.text(sendMessage);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
@@ -77,7 +77,7 @@ public class ConnectionTips {
         if (isCustomTextEnabled) {
             sendMessage = this.disconnectionText.replace("%player%", playerName);
         } else {
-            sendMessage = playerName + ": Exited the servers.";
+            sendMessage = "&7" + playerName + ": Exited the servers.";
         }
         TextComponent textComponent = Component.text(sendMessage);
         for (RegisteredServer s : this.proxyServer.getAllServers()) {

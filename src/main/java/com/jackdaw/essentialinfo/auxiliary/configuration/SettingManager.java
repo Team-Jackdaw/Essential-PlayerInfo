@@ -58,8 +58,8 @@ public class SettingManager {
         this.commandToBroadcastEnabled = toml.getBoolean("message.command-to-broadcast");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
         this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
-        this.customTextEnabled = toml.getBoolean("customText.enable");
-        this.rememberMeEnable = toml.getBoolean("rememberMe.enable");
+        this.customTextEnabled = toml.getBoolean("customText.enabled");
+        this.rememberMeEnable = toml.getBoolean("rememberMe.enabled");
         this.connectionText = toml.getString("customText.connectionText");
         this.serverChangeText = toml.getString("customText.serverChangeText");
         this.disconnectionText = toml.getString("customText.disconnectionText");
