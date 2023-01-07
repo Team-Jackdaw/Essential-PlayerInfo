@@ -60,10 +60,10 @@ public class Message {
             if (this.isCustomTextEnabled) {
                 sendMessage = this.chatText.replace("%player%", playerName).replace("%server%", server) + message;
             } else {
-                sendMessage = "[" + server + "] <" + playerName + "> " + message;
+                sendMessage = "&7[" + server + "] <" + playerName + "> " + message;
             }
         } else {
-            sendMessage = "<" + player.getUsername() + "> " + message;
+            sendMessage = "&7<" + player.getUsername() + "> " + message;
         }
         TextComponent textComponent = Component.text(sendMessage);
         // send message to other server

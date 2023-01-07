@@ -4,7 +4,7 @@
 
 This is a very lightweight plugin for Velocity proxy.
 
-Used API of Velocity 3.2.0, so it may only support Velocity version 3.1.0 and above, and other versions have not been tested.
+Used API of Velocity 3.1.1, so it may only support Velocity version 3.1.1 or above, and other versions have not been tested.
 
 ## Core Features
 
@@ -100,9 +100,9 @@ is "#".
 
 ## To do list
 
-- [] Get the server list and provide a way to click to switch.
+- [ ] Get the server list and provide a way to click to switch.
 
-- [] Add an advance way to customize the messages including some extra feature (By `miniMessage` format).
+- [ ] Add an advance way to customize the messages including some extra feature (By `miniMessage` format).
 
 ## Notes
 

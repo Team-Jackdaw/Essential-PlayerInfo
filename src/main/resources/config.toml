@@ -22,11 +22,11 @@
 
 # Remember me
 [rememberMe]
-    enable=true
+    enabled=true
 
 # Custom Message Setting
 [customText]
-    enable = false
+    enabled = false
     connectionText = "&7%player%: Connect to [%server%]."
     serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
     disconnectionText = "&7%player%: Exit the servers."
