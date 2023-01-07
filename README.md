@@ -35,16 +35,17 @@ You can now let your players set the initial connecting server as they like. The
 Players can use command to set the mode and server.
 
 - Set default mode
-  - Description: If set to `true`, players will connect to a specific server every time when they connect to the proxy. This initial server can be set by another command.
-    If set to `false`, players will connect to the server they last exit.
-  - Usage: `/remember mode <true, false>`
-  - Default: `false`
+  - Description: If set to `preset`, players will connect to a specific server every time when they connect to the
+    proxy. This initial server can be set by another command. If set to `last`, players will connect to the server they
+    last exit.
+  - Usage: `/remember mode <last, preset>`
+  - Default: `last`
 
 
 - Set initial server
-    - Description: Only work if the default mode is `true`. Set the initial connecting server.
-    - Usage: `/remember server <servername>`
-    - Default: `null` (If null, players will connect to the default server of the proxy)
+  - Description: Only work if the default mode is `true`. Set the initial connecting server.
+  - Usage: `/remember server <servername>`
+  - Default: `null` (If null, players will connect to the default server of the proxy)
     
 ## Optional Features
 

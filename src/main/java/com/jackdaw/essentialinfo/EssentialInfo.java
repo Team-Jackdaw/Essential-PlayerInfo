@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
 
 // register the plugin
 @Plugin(
@@ -56,7 +57,10 @@ public class EssentialInfo {
             return;
         }
         if (setting.isTabListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger, setting));
+            TabList tabList = new TabList(proxyServer, setting);
+            this.proxyServer.getEventManager().register(this, tabList);
+            this.proxyServer.getScheduler().buildTask(this, tabList::pingUpdate)
+                    .repeat(50L, TimeUnit.MILLISECONDS).schedule();
             logger.info("Main: Loaded TabList.");
         }
 

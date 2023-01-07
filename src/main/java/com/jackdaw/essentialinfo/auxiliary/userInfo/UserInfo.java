@@ -3,17 +3,18 @@ package com.jackdaw.essentialinfo.auxiliary.userInfo;
 public class UserInfo {
     private final String name;
     private final String uuid;
-    private boolean defaultMode;
+    private String defaultMode;
     private String server;
 
     /**
      * A user's information class. To initialize the class, you need the parameters below.
-     * @param name User's name.
-     * @param uuid User's uuid.
+     *
+     * @param name        User's name.
+     * @param uuid        User's uuid.
      * @param defaultMode User's default mode.
-     * @param server User's default server.
+     * @param server      User's default server.
      */
-    public UserInfo(String name, String uuid, boolean defaultMode, String server){
+    public UserInfo(String name, String uuid, String defaultMode, String server) {
         this.name = name;
         this.uuid = uuid;
         this.defaultMode = defaultMode;
@@ -32,9 +33,9 @@ public class UserInfo {
     /**
      * Get the remembered mode of player from the data file.
      *
-     * @return boolean i.e. true for "remember the default server that was set by player.", false for "remember the last server when the player left last time."
+     * @return String i.e. "preset" for "remember the default server that was set by player.", "last" for "remember the last server when the player left last time."
      */
-    public boolean getDefaultMde() {
+    public String getDefaultMde() {
         return this.defaultMode;
     }
 
@@ -59,7 +60,7 @@ public class UserInfo {
     /**
      * Set the remembered mode of player from the data file.
      */
-    public void setDefaultMode(boolean defaultMode) {
+    public void setDefaultMode(String defaultMode) {
         this.defaultMode = defaultMode;
     }
 

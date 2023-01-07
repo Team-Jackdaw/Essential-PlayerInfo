@@ -11,16 +11,15 @@ import java.util.HashMap;
  *
  * <p>
  * Read and Write the data file with server information, each file just remember one player information.
- *
  */
-public final class UserInfoUtils {
+public final class UserInfoManager {
     private final Logger logger;
     private final File theFile;
     private final UserInfo userInfo;
 
-    public UserInfoUtils(File workingDirectory, Logger logger, Player player) {
+    public UserInfoManager(File workingDirectory, Logger logger, Player player) {
         this.logger = logger;
-        this.userInfo = new UserInfo(player.getUsername(), player.getUniqueId().toString(), false, null);
+        this.userInfo = new UserInfo(player.getUsername(), player.getUniqueId().toString(), "last", null);
         this.theFile = new File(workingDirectory, player.getUniqueId().toString() + ".yml");
         readOrInitialize();
     }
@@ -33,7 +32,7 @@ public final class UserInfoUtils {
         }
         try {
             HashMap userData = YamlUtils.readFile(theFile);
-            this.userInfo.setDefaultMode((Boolean) userData.get("defaultMode"));
+            this.userInfo.setDefaultMode((String) userData.get("defaultMode"));
             this.userInfo.setServer((String) userData.get("server"));
         } catch (FileNotFoundException e) {
             logger.error("RememberMe: Can't open the user data file.");
@@ -64,9 +63,10 @@ public final class UserInfoUtils {
 
     /**
      * Get User information from data file.
+     *
      * @return User information.
      */
-    public UserInfo getUserData() {
+    public UserInfo getUserInfo() {
         return userInfo;
     }
 
@@ -81,9 +81,10 @@ public final class UserInfoUtils {
 
     /**
      * Set user's default mode.
+     *
      * @param defaultMode Default mode.
      */
-    public void setDefaultMode(boolean defaultMode) {
+    public void setDefaultMode(String defaultMode) {
         this.userInfo.setDefaultMode(defaultMode);
         writeFile();
     }
