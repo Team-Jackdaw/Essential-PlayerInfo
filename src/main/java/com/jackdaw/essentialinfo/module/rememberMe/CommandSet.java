@@ -4,6 +4,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
 
 import java.util.List;
@@ -24,22 +25,34 @@ public final class CommandSet implements SimpleCommand {
     public void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
+        Component error = Component.text(String.join(" "
+                , "This is RememberMe module of Essential-PlayerInfo plugin. \n"
+                , "Set mode: `/remember mode <true, false>`\n"
+                , "Set server: `/remember server <servername>`"));
         if (invocation.arguments().length < 2) {
-            source.sendMessage(Component.text(String.join(" "
-                    , "This is RememberMe module of Essential-PlayerInfo plugin. \n"
-                    , "You can use `/remember mode <true, false>` or \n "
-                    , "`/remember server <servername>` to set your default server.")));
+            source.sendMessage(error);
             return;
         }
         String command = args[0];
         String parameter = args[1];
         Player player = (Player) source;
         if (command.equals("mode")) {
-            rememberMe.setMode(Boolean.parseBoolean(parameter), player);
+            if (parameter.equalsIgnoreCase("true") || parameter.equalsIgnoreCase("false")){
+                rememberMe.setMode(Boolean.parseBoolean(parameter), player);
+                source.sendMessage(Component.text("Your default mode is set to " + parameter));
+                return;
+            }
         }
         if (command.equals("server")) {
-            rememberMe.setServer(parameter, player);
+            for(RegisteredServer server : proxyServer.getAllServers()){
+                if(server.getServerInfo().getName().equals(parameter)){
+                    rememberMe.setServer(parameter, player);
+                    source.sendMessage(Component.text("Your default server is set to " + parameter));
+                    return;
+                }
+            }
         }
+        source.sendMessage(error);
     }
 
     @Override
