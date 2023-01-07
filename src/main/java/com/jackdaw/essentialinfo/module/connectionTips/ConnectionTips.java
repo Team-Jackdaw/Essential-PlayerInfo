@@ -1,14 +1,13 @@
 package com.jackdaw.essentialinfo.module.connectionTips;
 
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
+import com.jackdaw.essentialinfo.auxiliary.serializer.Deserializer;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.jetbrains.annotations.NotNull;
 
 public class ConnectionTips {
@@ -49,23 +48,23 @@ public class ConnectionTips {
         if (event.getPreviousServer().isPresent()) {
             String previousServer = event.getPreviousServer().get().getServerInfo().getName();
             if (isCustomTextEnabled) {
+                if (serverChangeText.isEmpty()) return;
                 sendMessage = this.serverChangeText.replace("%player%", playerName).replace("%previousServer%", previousServer).replace("%server%", server);
             } else {
                 sendMessage = "&7" + playerName + ": [" + previousServer + "] -> [" + server + "]";
             }
-            TextComponent textComponent = Component.text(sendMessage);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
-                s.sendMessage(textComponent);
+                s.sendMessage(Deserializer.deserialize(sendMessage));
             }
         } else {
             if (isCustomTextEnabled) {
+                if (connectionText.isEmpty()) return;
                 sendMessage = this.connectionText.replace("%player%", playerName).replace("%server%", server);
             } else {
                 sendMessage = "&7" + playerName + ": Connected to [" + server + "].";
             }
-            TextComponent textComponent = Component.text(sendMessage);
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
-                s.sendMessage(textComponent);
+                s.sendMessage(Deserializer.deserialize(sendMessage));
             }
         }
     }
@@ -75,13 +74,13 @@ public class ConnectionTips {
         String playerName = event.getPlayer().getUsername();
         String sendMessage;
         if (isCustomTextEnabled) {
+            if (disconnectionText.isEmpty()) return;
             sendMessage = this.disconnectionText.replace("%player%", playerName);
         } else {
             sendMessage = "&7" + playerName + ": Exited the servers.";
         }
-        TextComponent textComponent = Component.text(sendMessage);
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
-            s.sendMessage(textComponent);
+            s.sendMessage(Deserializer.deserialize(sendMessage));
         }
     }
 }

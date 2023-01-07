@@ -18,6 +18,8 @@ Display the player ID on the Minecraft server list.
 
 Show global players on the TabList.
 
+You can now customize the display mode and display message of global players. (see config)
+
 ![TabList1.png][2]
 
 **Global Chat & ConnectionTips**
@@ -64,6 +66,8 @@ is "#".
 
  If you update from an old version, your config file will be recreated, and your setting will be reset to default.
 
+ You can now disable any custom message by setting a component blank `""`.
+
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
     [version]
@@ -72,6 +76,8 @@ is "#".
     # Global tablist
     [tabList]
         enabled=true
+        # `0` for survival, `1` for creative, `2` for adventure, `3` for spectator.
+        displayMode=3
     
     # Global massage
     [message]
@@ -97,6 +103,7 @@ is "#".
       serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
       isconnectionText = "&7%player%: Exit the servers."
       chatText = "&7[%server%] <%player%> "
+      tabListText = "[%server%] %player%"
 
 ## To do list
 

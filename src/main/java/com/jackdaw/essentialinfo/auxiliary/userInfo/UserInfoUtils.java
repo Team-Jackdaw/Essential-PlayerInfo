@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.HashMap;
 
 /**
- * A parser used to get the remembered information from the files.
+ * A serializer used to get the remembered information from the files.
  *
  * <p>
  * Read and Write the data file with server information, each file just remember one player information.

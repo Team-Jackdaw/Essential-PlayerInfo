@@ -1,5 +1,6 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
+import com.jackdaw.essentialinfo.auxiliary.serializer.Deserializer;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
@@ -25,7 +26,7 @@ public final class CommandSet implements SimpleCommand {
     public void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
-        Component error = Component.text(String.join(" "
+        Component error = Deserializer.deserialize(String.join(" "
                 , "This is RememberMe module of Essential-PlayerInfo plugin. \n"
                 , "Set mode: `/remember mode <true, false>`\n"
                 , "Set server: `/remember server <servername>`"));

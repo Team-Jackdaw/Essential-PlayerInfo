@@ -15,26 +15,28 @@ import java.nio.file.Files;
  * Configure the setting if a specific module is enable or disable.
  *
  * @author WDRshadow, Lokeyli
- * @version 3.0
+ * @version v3.1
  */
 public class SettingManager {
     private final Logger logger;
     private final File workingDirectory;
     private final File configFile;
 
-    private static final String lastVersion = "v3.0"; // use for confirming the setting version is the same with the plugin
+    private static final String lastVersion = "v3.1"; // use for confirming the setting version is the same with the plugin
 
     private boolean tabListEnabled;
+    private int displayMode;
     private boolean messageEnabled;
     private boolean pingListEnabled;
     private boolean connectionTipsEnabled;
     private boolean commandToBroadcastEnabled;
     private boolean customTextEnabled;
-    private boolean rememberMeEnable;
+    private boolean rememberMeEnabled;
     private String connectionText;
     private String serverChangeText;
     private String disconnectionText;
     private String chatText;
+    private String tabListText;
 
     /**
      * Instantiates a new Setting manager.
@@ -54,16 +56,18 @@ public class SettingManager {
         saveDefaultConfig();
         Toml toml = new Toml().read(new File(workingDirectory, "config.toml"));
         this.tabListEnabled = toml.getBoolean("tabList.enabled");
+        this.displayMode = Math.toIntExact(toml.getLong("tabList.displayMode"));
         this.messageEnabled = toml.getBoolean("message.enabled");
         this.commandToBroadcastEnabled = toml.getBoolean("message.command-to-broadcast");
         this.pingListEnabled = toml.getBoolean("pingList.enabled");
         this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
         this.customTextEnabled = toml.getBoolean("customText.enabled");
-        this.rememberMeEnable = toml.getBoolean("rememberMe.enabled");
+        this.rememberMeEnabled = toml.getBoolean("rememberMe.enabled");
         this.connectionText = toml.getString("customText.connectionText");
         this.serverChangeText = toml.getString("customText.serverChangeText");
         this.disconnectionText = toml.getString("customText.disconnectionText");
         this.chatText = toml.getString("customText.chatText");
+        this.tabListText = toml.getString("customText.tabListText");
     }
 
     private void saveDefaultConfig() throws IOException {
@@ -102,6 +106,15 @@ public class SettingManager {
      */
     public boolean isTabListEnabled() {
         return tabListEnabled;
+    }
+
+    /**
+     * Get the display mode of TabList.
+     *
+     * @return the int, i.e. `0` for survival, `1` for creative, `2` for adventure, `3` for spectator.
+     */
+    public int getTabDisplayMode() {
+        return displayMode;
     }
 
     /**
@@ -155,7 +168,7 @@ public class SettingManager {
      * @return the boolean, i.e. enabled returns true; otherwise, false.
      */
     public boolean isRememberMeEnabled() {
-        return rememberMeEnable;
+        return rememberMeEnabled;
     }
 
     /**
@@ -194,4 +207,12 @@ public class SettingManager {
         return chatText;
     }
 
+    /**
+     * Get Tab List Text.
+     *
+     * @return the String.
+     */
+    public String getTabListText() {
+        return tabListText;
+    }
 }

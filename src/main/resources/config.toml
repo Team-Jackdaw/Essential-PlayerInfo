@@ -1,11 +1,12 @@
 # essential-playerinfo
 # Configuration version. !Please do not change this option!
 [version]
-    version="v3.0"
+    version="v3.1"
 
 # Global tablist
 [tabList]
     enabled=true
+    displayMode=3
 
 # Global massage
 [message]
@@ -31,3 +32,4 @@
     serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
     disconnectionText = "&7%player%: Exit the servers."
     chatText = "&7[%server%] <%player%> "
+    tabListText = "[%server%] %player%"

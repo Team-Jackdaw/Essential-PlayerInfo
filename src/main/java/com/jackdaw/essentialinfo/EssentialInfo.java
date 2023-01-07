@@ -56,7 +56,7 @@ public class EssentialInfo {
             return;
         }
         if (setting.isTabListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
+            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger, setting));
             logger.info("Main: Loaded TabList.");
         }
 
