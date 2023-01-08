@@ -1,23 +1,23 @@
 package com.jackdaw.essentialinfo.auxiliary.userInfo;
 
 import com.velocitypowered.api.proxy.Player;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.*;
 import java.util.HashMap;
 
 /**
- * A serializer used to get the remembered information from the files.
+ * A serializer used to read or write the user information from the files.
  *
- * <p>
- * Read and Write the data file with server information, each file just remember one player information.
+ * <p>Read or Write the data file with server information, each file just remember one player information.</p>
  */
 public final class UserInfoManager {
     private final Logger logger;
     private final File theFile;
     private final UserInfo userInfo;
 
-    public UserInfoManager(File workingDirectory, Logger logger, Player player) {
+    public UserInfoManager(File workingDirectory, Logger logger, @NotNull Player player) {
         this.logger = logger;
         this.userInfo = new UserInfo(player.getUsername(), player.getUniqueId().toString(), "last", null);
         this.theFile = new File(workingDirectory, player.getUniqueId().toString() + ".yml");
@@ -25,7 +25,7 @@ public final class UserInfoManager {
     }
 
     // read or initialize the user data file
-    public void readOrInitialize() {
+    private void readOrInitialize() {
         if (!theFile.exists()) {
             writeFile();
             return;
@@ -40,9 +40,7 @@ public final class UserInfoManager {
     }
 
 
-    /**
-     * Confirm and write the file as the UserInfo class record.
-     */
+    // Confirm and write the file as the UserInfo class record.
     private void writeFile() {
         try {
             if (!theFile.exists()) {
