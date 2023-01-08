@@ -44,12 +44,16 @@ public class TabList {
         // Update list of current players
         for (Player toPlayer : this.proxyServer.getAllPlayers()) {
             String serverName = event.getServer().getServerInfo().getName();
+            if (toPlayer.getTabList().containsEntry(playerOfEvent.getUniqueId()))
+                toPlayer.getTabList().removeEntry(playerOfEvent.getUniqueId());
             addTabListEntry(toPlayer, playerOfEvent, serverName);
         }
         // Update list of new connecting player
         for (Player fromPlayer : this.proxyServer.getAllPlayers()) {
             if (fromPlayer.getCurrentServer().isPresent()) {
                 String serverName = fromPlayer.getCurrentServer().get().getServerInfo().getName();
+                if (playerOfEvent.getTabList().containsEntry(fromPlayer.getUniqueId()))
+                    playerOfEvent.getTabList().removeEntry(fromPlayer.getUniqueId());
                 addTabListEntry(playerOfEvent, fromPlayer, serverName);
             }
         }
@@ -57,14 +61,9 @@ public class TabList {
 
     // add TabList entry
     private void addTabListEntry(@NotNull Player toPlayer, @NotNull Player fromPlayer, String serverName) {
-        if (toPlayer.getUniqueId().equals(fromPlayer.getUniqueId())) return;
-        if (toPlayer.getTabList().containsEntry(fromPlayer.getUniqueId())) {
-            TabListEntry tabListEntry = findTabListEntry(toPlayer, fromPlayer);
-            if (!(tabListEntry == null)) {
-                tabListEntry.setDisplayName(getDisplayName(serverName, fromPlayer));
-                return;
-            }
-        }
+        if (toPlayer.getUniqueId().equals(fromPlayer.getUniqueId()) ||
+                toPlayer.getCurrentServer().equals(fromPlayer.getCurrentServer()) ||
+                toPlayer.getTabList().containsEntry(fromPlayer.getUniqueId())) return;
         toPlayer.getTabList().addEntry(TabListEntry.builder()
                 .displayName(getDisplayName(serverName, fromPlayer))
                 .latency((int) fromPlayer.getPing())
@@ -83,14 +82,12 @@ public class TabList {
         }
     }
 
-    // normal pingUpdate, public method used for registering the scheduler in plugin.
+    // normal pingUpdate, public method used for registering the scheduler in plugin. Need to improve!
     public void pingUpdate() {
         for (Player toPlayer : this.proxyServer.getAllPlayers())
             for (Player fromPlayer : this.proxyServer.getAllPlayers()) {
-                TabListEntry tabListEntry = findTabListEntry(toPlayer, fromPlayer);
-                if (!(tabListEntry == null)) {
-                    tabListEntry.setLatency((int) fromPlayer.getPing());
-                }
+                if (fromPlayer.getCurrentServer().isPresent())
+                    addTabListEntry(toPlayer, fromPlayer, fromPlayer.getCurrentServer().get().getServerInfo().getName());
             }
     }
 
@@ -109,7 +106,7 @@ public class TabList {
     }
 
     // filter of TabListEntry of fromPlayer in toPlayer
-    private TabListEntry findTabListEntry(@NotNull Player toPlayer, @NotNull Player fromPlayer) {
+    private static TabListEntry findTabListEntry(@NotNull Player toPlayer, @NotNull Player fromPlayer) {
         return toPlayer.getTabList().getEntries()
                 .stream()
                 .filter(t -> t.getProfile().getId().equals(fromPlayer.getGameProfile().getId()))
