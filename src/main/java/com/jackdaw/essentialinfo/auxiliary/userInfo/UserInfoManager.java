@@ -4,7 +4,9 @@ import com.velocitypowered.api.proxy.Player;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -51,7 +53,7 @@ public final class UserInfoManager {
             HashMap userData = new HashMap();
             userData.put("name", this.userInfo.getName());
             userData.put("uuid", this.userInfo.getUuid());
-            userData.put("defaultMode", this.userInfo.getDefaultMde());
+            userData.put("defaultMode", this.userInfo.getDefaultMode());
             userData.put("server", this.userInfo.getServer());
             YamlUtils.writeFile(theFile, userData);
         } catch (IOException e) {

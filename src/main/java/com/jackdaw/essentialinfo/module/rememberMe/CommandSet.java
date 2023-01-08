@@ -8,6 +8,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -31,31 +32,39 @@ public final class CommandSet implements SimpleCommand {
     public void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
+        Player player = (Player) source;
+        UserInfoManager userInfoManager = new UserInfoManager(workingDirectory, logger, player);
         Component error = Deserializer.deserialize(String.join(" "
                 , "&7This is RememberMe module of Essential-PlayerInfo plugin. \n"
                 , "Set mode: `/remember mode <last, preset>`\n"
-                , "Set server: `/remember server <servername>`"));
+                , "Set server: `/remember server <servername>`\n"
+                , "Your default mode is &e"
+                , userInfoManager.getUserInfo().getDefaultMode()
+                , "\n &7and your initial server is &e"
+                , userInfoManager.getUserInfo().getServer()));
         if (invocation.arguments().length < 2) {
             source.sendMessage(error);
             return;
         }
         String command = args[0];
         String parameter = args[1];
-        Player player = (Player) source;
         if (command.equals("mode")) {
             if (parameter.equalsIgnoreCase("preset") || parameter.equalsIgnoreCase("last")) {
-                setMode(parameter, player);
+                setMode(parameter, player, userInfoManager);
                 source.sendMessage(Component.text("Your default mode is set to " + parameter));
                 return;
             }
         }
         if (command.equals("server")) {
-            for(RegisteredServer server : proxyServer.getAllServers()){
-                if(server.getServerInfo().getName().equals(parameter)){
-                    setServer(parameter, player);
-                    source.sendMessage(Component.text("Your default server is set to " + parameter));
-                    return;
-                }
+            RegisteredServer initialServer = this.proxyServer.getAllServers()
+                    .stream()
+                    .filter(s -> s.getServerInfo().getName().equals(parameter))
+                    .findFirst()
+                    .orElse(null);
+            if (!(initialServer == null)) {
+                setServer(parameter, userInfoManager);
+                source.sendMessage(Component.text("Your default server is set to " + parameter));
+                return;
             }
         }
         source.sendMessage(error);
@@ -94,15 +103,13 @@ public final class CommandSet implements SimpleCommand {
     }
 
     // set the default server by command
-    public void setServer(String serverName, Player player) {
-        UserInfoManager userInfoManager = new UserInfoManager(workingDirectory, logger, player);
+    public void setServer(String serverName, @NotNull UserInfoManager userInfoManager) {
         userInfoManager.setDefaultMode("preset");
         userInfoManager.setUserServer(serverName);
     }
 
     // set the default mode by command
-    public void setMode(String mode, Player player) {
-        UserInfoManager userInfoManager = new UserInfoManager(workingDirectory, logger, player);
+    public void setMode(String mode, @NotNull Player player, @NotNull UserInfoManager userInfoManager) {
         userInfoManager.setDefaultMode(mode);
         if (player.getCurrentServer().isPresent()) {
             userInfoManager.setUserServer(player.getCurrentServer().get().getServerInfo().getName());

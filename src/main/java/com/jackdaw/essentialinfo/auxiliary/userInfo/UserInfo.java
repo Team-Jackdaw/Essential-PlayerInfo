@@ -35,7 +35,7 @@ public class UserInfo {
      *
      * @return String i.e. "preset" for "remember the default server that was set by player.", "last" for "remember the last server when the player left last time."
      */
-    public String getDefaultMde() {
+    public String getDefaultMode() {
         return this.defaultMode;
     }
 

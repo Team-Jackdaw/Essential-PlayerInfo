@@ -26,6 +26,22 @@ public class TabList {
         this.displayMode = setting.getTabDisplayMode();
     }
 
+    /**
+     * <h>TabListEntry filter</h>
+     * <p>Look for a specific TabListEntry from a TabList</p>
+     *
+     * @param toPlayer   TabList holder
+     * @param fromPlayer the profile of this TabListEntry
+     * @return the TabListEntry belongs to fromPlayer, or null if not found
+     */
+    public static TabListEntry findTabListEntry(@NotNull Player toPlayer, @NotNull Player fromPlayer) {
+        return toPlayer.getTabList().getEntries()
+                .stream()
+                .filter(t -> t.getProfile().getId().equals(fromPlayer.getGameProfile().getId()))
+                .findFirst()
+                .orElse(null);
+    }
+
     // listener of player login
     @Subscribe
     public void connect(ServerConnectedEvent event) {
@@ -53,22 +69,6 @@ public class TabList {
                 addTabListEntry(playerOfEvent, fromPlayer, serverName);
             }
         }
-    }
-
-    /**
-     * <h>TabListEntry filter</h>
-     * <p>Look for a specific TabListEntry from a TabList</p>
-     *
-     * @param toPlayer   TabList holder
-     * @param fromPlayer the profile of this TabListEntry
-     * @return the TabListEntry belongs to fromPlayer, or null if not found
-     */
-    public static TabListEntry findTabListEntry(@NotNull Player toPlayer, @NotNull Player fromPlayer) {
-        return toPlayer.getTabList().getEntries()
-                .stream()
-                .filter(t -> t.getProfile().getId().equals(fromPlayer.getGameProfile().getId()))
-                .findFirst()
-                .orElse(null);
     }
 
     // remove disconnected player from list

@@ -50,21 +50,23 @@ public class RememberMe {
     @Subscribe
     public void onPlayerLogging(PlayerChooseInitialServerEvent event) {
         String initialServerName = new UserInfoManager(workingDirectory, logger, event.getPlayer()).getUserInfo().getServer();
-        if(initialServerName == null){
-            return;}
-        for (RegisteredServer server : this.proxyServer.getAllServers()) {
-            if(server.getServerInfo().getName().equals(initialServerName)){
-                event.setInitialServer(server);
-                return;
-            }
+        if (initialServerName == null) {
+            return;
         }
+        RegisteredServer initialServer = this.proxyServer.getAllServers()
+                .stream()
+                .filter(s -> s.getServerInfo().getName().equals(initialServerName))
+                .findFirst()
+                .orElse(null);
+        if (initialServer == null) return;
+        event.setInitialServer(initialServer);
     }
 
     // listener of player disconnection and remember the last server the player exit
     @Subscribe
     public void onServerConnected(ServerConnectedEvent event) {
         UserInfoManager userInfoManager = new UserInfoManager(workingDirectory, logger, event.getPlayer());
-        if (userInfoManager.getUserInfo().getDefaultMde().equals("last")) {
+        if (userInfoManager.getUserInfo().getDefaultMode().equals("last")) {
             userInfoManager.setUserServer(event.getServer().getServerInfo().getName());
         }
     }
