@@ -94,6 +94,7 @@ is "#".
 
 - You can now disable any custom message by setting a component blank with `""`.
 
+The default config file is shown below:
 
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
@@ -138,7 +139,7 @@ is "#".
         disconnectionText = "<gray>%player%: Exit the servers.</gray>"
         chatText = "<gray><u><click:run_command:'/server %server%'><hover:show_text:'Click to switch.'>[%server%]</hover></click></u> <%player%> "
         tabListText = "[%server%] %player%"
-        connectionMessageText = "Hello World!"
+        connectionMessageText = "<yellow>-------------------------------\nWelcome to %serverName%!\n-------------------------------\nYou can click the servers below to change your connecting server.\n%serverList%\n-------------------------------\nYou can use <u><light_purple><click:run_command:'/remember'><hover:show_text:'Click to run command'>/remember</hover></click></light_purple></u> to set your default connecting server.\n-------------------------------</yellow>"
 
 ## To do list
 
