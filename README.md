@@ -43,7 +43,7 @@ Players can use command to set the mode and server.
 
 
 - Set initial server
-  - Description: Only work if the default mode is `true`. Set the initial connecting server.
+  - Description: Only work if the default mode is `preset`. Set the initial connecting server.
   - Usage: `/remember server <servername>`
   - Default: `null` (If null, players will connect to the default server of the proxy)
     
