@@ -2,6 +2,7 @@ package com.jackdaw.essentialinfo;
 
 import com.google.inject.Inject;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.connectMessage.ConnectionMessage;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
@@ -66,7 +67,7 @@ public class EssentialInfo {
 
         if (setting.isMessageEnabled()) {
             this.proxyServer.getEventManager().register(
-                    this, new Message(this.proxyServer, logger, setting));
+                    this, new Message(this.proxyServer, setting));
             logger.info("Main: Loaded Message.");
         }
 
@@ -87,6 +88,11 @@ public class EssentialInfo {
                 System.out.println(ioException.getMessage());
             }
             logger.info("Main: Loaded RememberMe.");
+        }
+
+        if (setting.isConnectionMessageEnabled()) {
+            this.proxyServer.getEventManager().register(this, new ConnectionMessage(proxyServer, setting));
+            logger.info("Main: Loaded ConnectionMessage.");
         }
     }
 

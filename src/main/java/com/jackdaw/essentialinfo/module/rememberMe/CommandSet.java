@@ -29,19 +29,17 @@ public final class CommandSet implements SimpleCommand {
     }
 
     @Override
-    public void execute(Invocation invocation) {
+    public void execute(@NotNull Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         Player player = (Player) source;
         UserInfoManager userInfoManager = new UserInfoManager(workingDirectory, logger, player);
-        Component error = Deserializer.deserialize(String.join(" "
-                , "&7This is RememberMe module of Essential-PlayerInfo plugin. \n"
-                , "Set mode: `/remember mode <last, preset>`\n"
-                , "Set server: `/remember server <servername>`\n"
-                , "Your default mode is &e"
+        Component error = Deserializer.miniMessage(String.join(" "
+                , "<dark_gray><yellow>-------------------------------\nThis is RememberMe module of Essential-PlayerInfo plugin.\nSet mode: <light_purple><u><click:suggest_command:'/remember mode '>/remember mode <last, preset></click></u></light_purple>\nSet server: <light_purple><u><click:suggest_command:'/remember server '>/remember server <servername></click></u></light_purple>\nYour default mode is <u><red>"
                 , userInfoManager.getUserInfo().getDefaultMode()
-                , "\n &7and your initial server is &e"
-                , userInfoManager.getUserInfo().getServer()));
+                , "</red></u>.\nYour initial server is <red><u>"
+                , userInfoManager.getUserInfo().getServer()
+                , "</u></red>.\n-------------------------------</yellow></dark_gray>"));
         if (invocation.arguments().length < 2) {
             source.sendMessage(error);
             return;
@@ -71,7 +69,7 @@ public final class CommandSet implements SimpleCommand {
     }
 
     @Override
-    public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
+    public @NotNull CompletableFuture<List<String>> suggestAsync(@NotNull Invocation invocation) {
         String[] currentArgs = invocation.arguments();
         List<String> suggest;
         if (currentArgs.length == 0) {

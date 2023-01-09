@@ -17,7 +17,6 @@ import java.util.Objects;
 public class Message {
     // class for Server
     private final ProxyServer proxyServer;
-    private final Logger logger;
     private final Parser parser = MessageParser.getParser();
     private final boolean isCommandToBroadcast;
     private final boolean isCustomTextEnabled;
@@ -25,10 +24,9 @@ public class Message {
 
     // connect the module to the plugin and server
     @Inject
-    public Message(ProxyServer proxyServer, Logger logger, SettingManager setting) {
+    public Message(ProxyServer proxyServer, SettingManager setting) {
         this.isCommandToBroadcast = setting.isCommandToBroadcastEnabled();
         this.proxyServer = proxyServer;
-        this.logger = logger;
         this.isCustomTextEnabled = setting.isCustomTextEnabled();
         this.chatText = setting.getChatText();
     }
@@ -60,15 +58,25 @@ public class Message {
                 if (this.chatText.isEmpty()) return;
                 sendMessage = this.chatText.replace("%player%", playerName).replace("%server%", server) + message;
             } else {
-                sendMessage = "&7[" + server + "] <" + playerName + "> " + message;
+                // "<gray><u><click:run_command:'/server %server%'><hover:show_text:'Click to switch.'>[%server%]</hover></click></u> <%player%> "
+                sendMessage = String.join(""
+                        , "<gray><u><click:run_command:'/server "
+                        , server
+                        , "'><hover:show_text:'Click to switch.'>["
+                        , server
+                        , "]</hover></click></u> <"
+                        , playerName
+                        , "> "
+                        , message
+                );
             }
         } else {
-            sendMessage = "&7<" + player.getUsername() + "> " + message;
+            sendMessage = "<" + player.getUsername() + "> " + message;
         }
         // send message to other server
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
             if (!Objects.equals(s, player.getCurrentServer().get().getServer())) {
-                s.sendMessage(Deserializer.deserialize(sendMessage));
+                s.sendMessage(Deserializer.miniMessage(sendMessage));
             }
         }
     }
