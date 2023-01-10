@@ -5,7 +5,6 @@ import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
-import javax.swing.*;
 import java.nio.file.Path;
 
 /**
