@@ -1,6 +1,10 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
+import com.google.inject.Inject;
+import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.auxiliary.userInfo.UserInfoManager;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.VelocityDataDir;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.event.Subscribe;
@@ -12,19 +16,16 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
-public class RememberMe {
+public class RememberMe extends AbstractComponent {
     // class server
-    private final ProxyServer proxyServer;
-    private final Logger logger;
     private final File workingDirectory;
 
-
-    // connect the module to the plugin and server
-    public RememberMe(File parentWorkingDirectory, ProxyServer proxyServer, Logger logger) throws IOException {
-        this.workingDirectory = new File(parentWorkingDirectory, "user");
-        this.proxyServer = proxyServer;
-        this.logger = logger;
+    @Inject
+    public RememberMe(ProxyServer proxyServer, Logger logger, @VelocityDataDir Path velocityDataDir, SettingManager setting) {
+        super(proxyServer, logger, velocityDataDir, setting);
+        this.workingDirectory = new File(velocityDataDir.toFile(), "user");
         checkFolder();
         commandSet();
     }

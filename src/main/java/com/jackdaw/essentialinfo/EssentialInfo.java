@@ -1,7 +1,11 @@
 package com.jackdaw.essentialinfo;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.JackdawModule;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
@@ -17,7 +21,6 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
 
 // register the plugin
 @Plugin(
@@ -28,65 +31,50 @@ import java.util.concurrent.TimeUnit;
 )
 public class EssentialInfo {
 
-    // generate instance server and logger
-    @Inject
+    // Injection done by Velocity
     private final ProxyServer proxyServer;
-    @Inject
-    private final Logger logger;
+    private final Logger logger;                // slf4j Logger
+    private final Path dataDirectory;           // Path of the plugin
 
-    // path of the plugin
-    @Inject
-    private @DataDirectory
-    Path dataDirectory;
+    private final SettingManager setting;
+    private final Injector injector;
 
     // connect to the server and logger
     @Inject
-    public EssentialInfo(ProxyServer proxyServer, Logger logger) {
+    public EssentialInfo(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
         this.proxyServer = proxyServer;
         this.logger = logger;
+        this.dataDirectory = dataDirectory;
+        this.setting = getSettingManager();
+        this.injector = Guice.createInjector(new JackdawModule(proxyServer, logger, dataDirectory, this.setting));
     }
-
 
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        // load setting config
-        SettingManager setting = getSettingManager();
         if (setting == null) {
             logger.error("Main: Can't load config file.");
             return;
         }
+
         if (setting.isTabListEnabled()) {
-            TabList tabList = new TabList(proxyServer, setting);
-            this.proxyServer.getEventManager().register(this, tabList);
-            this.proxyServer.getScheduler().buildTask(this, tabList::pingUpdate)
-                    .repeat(50L, TimeUnit.MILLISECONDS).schedule();
-            logger.info("Main: Loaded TabList.");
+            this.moduleOn(injector.getInstance(TabList.class), "Main: Loaded TabList.");
         }
 
         if (setting.isMessageEnabled()) {
-            this.proxyServer.getEventManager().register(
-                    this, new Message(this.proxyServer, logger, setting));
-            logger.info("Main: Loaded Message.");
+            this.moduleOn(injector.getInstance(Message.class), "Main: Loaded Message.");
         }
 
         if (setting.isPingListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
-            logger.info("Main: Loaded PingList.");
+            this.moduleOn(injector.getInstance(PingList.class), "Main: Loaded PingList.");
         }
 
         if (setting.isConnectionTipsEnabled()) {
-            this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer, setting));
-            logger.info("Main: Loaded ConnectionTips.");
+            this.moduleOn(injector.getInstance(ConnectionTips.class), "Main: Loaded ConnectionTips.");
         }
 
         if (setting.isRememberMeEnabled()) {
-            try {
-                this.proxyServer.getEventManager().register(this, new RememberMe(dataDirectory.toFile(), this.proxyServer, logger));
-            } catch (IOException ioException) {
-                System.out.println(ioException.getMessage());
-            }
-            logger.info("Main: Loaded RememberMe.");
+            this.moduleOn(injector.getInstance(RememberMe.class), "Main: Loaded RememberMe.");
         }
     }
 
@@ -100,6 +88,11 @@ public class EssentialInfo {
             return null;
         }
         return setting;
+    }
+
+    private void moduleOn(AbstractComponent module, String log){
+        this.proxyServer.getEventManager().register(this, module);
+        this.logger.info(log);
     }
 
 }

@@ -1,7 +1,10 @@
 package com.jackdaw.essentialinfo.module.connectionTips;
 
+import com.google.inject.Inject;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.auxiliary.serializer.Deserializer;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.VelocityDataDir;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
@@ -9,18 +12,20 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
-public class ConnectionTips {
+import java.nio.file.Path;
+
+public class ConnectionTips extends AbstractComponent {
     // class server
-    private final ProxyServer proxyServer;
     private final String connectionText;
     private final String serverChangeText;
     private final String disconnectionText;
     private final boolean isCustomTextEnabled;
 
-    // connect the module to the plugin and server
-    public ConnectionTips(ProxyServer proxyServer, SettingManager setting) {
-        this.proxyServer = proxyServer;
+    @Inject
+    public ConnectionTips(ProxyServer proxyServer, Logger logger, @VelocityDataDir Path velocityDataDir, SettingManager setting) {
+        super(proxyServer, logger, velocityDataDir, setting);
         this.isCustomTextEnabled = setting.isCustomTextEnabled();
         this.connectionText = setting.getConnectionText();
         this.serverChangeText = setting.getServerChangeText();

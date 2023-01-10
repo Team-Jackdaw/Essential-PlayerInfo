@@ -1,7 +1,10 @@
 package com.jackdaw.essentialinfo.module.tablist;
 
+import com.google.inject.Inject;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.auxiliary.serializer.Deserializer;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.VelocityDataDir;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
@@ -10,17 +13,27 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.player.TabListEntry;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
-public class TabList {
+import java.nio.file.Path;
+
+public class TabList extends AbstractComponent {
     // class server
-    private final ProxyServer proxyServer;
     private final boolean isCustomTextEnabled;
     private final String tabListText;
     private final int displayMode;
 
-    // connect the module to the plugin and server
-    public TabList(ProxyServer proxyServer, @NotNull SettingManager setting) {
-        this.proxyServer = proxyServer;
+    /**
+     * Instantiates a new Abstract component.
+     *
+     * @param proxyServer     the proxy server, is expected to be provided by Velocity.
+     * @param logger          the logger, is expected to be provided by Velocity.
+     * @param velocityDataDir the velocity data directory, is expected to be provided by Velocity.
+     * @param setting         the setting, is expected to be provided by the Main Class.
+     */
+    @Inject
+    public TabList(ProxyServer proxyServer, Logger logger, @VelocityDataDir Path velocityDataDir, SettingManager setting) {
+        super(proxyServer, logger, velocityDataDir, setting);
         this.isCustomTextEnabled = setting.isCustomTextEnabled();
         this.tabListText = setting.getTabListText();
         this.displayMode = setting.getTabDisplayMode();

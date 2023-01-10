@@ -3,6 +3,8 @@ package com.jackdaw.essentialinfo.module.message;
 import com.google.inject.Inject;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.auxiliary.serializer.Deserializer;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.VelocityDataDir;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
@@ -11,24 +13,21 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import org.slf4j.Logger;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Message {
+public class Message extends AbstractComponent {
     // class for Server
-    private final ProxyServer proxyServer;
-    private final Logger logger;
     private final Parser parser = MessageParser.getParser();
     private final boolean isCommandToBroadcast;
     private final boolean isCustomTextEnabled;
     private final String chatText;
 
-    // connect the module to the plugin and server
     @Inject
-    public Message(ProxyServer proxyServer, Logger logger, SettingManager setting) {
+    public Message(ProxyServer proxyServer, Logger logger, @VelocityDataDir Path velocityDataDir, SettingManager setting) {
+        super(proxyServer, logger, velocityDataDir, setting);
         this.isCommandToBroadcast = setting.isCommandToBroadcastEnabled();
-        this.proxyServer = proxyServer;
-        this.logger = logger;
         this.isCustomTextEnabled = setting.isCustomTextEnabled();
         this.chatText = setting.getChatText();
     }
