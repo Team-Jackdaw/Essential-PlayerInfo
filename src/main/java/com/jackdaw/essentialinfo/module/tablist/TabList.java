@@ -38,8 +38,6 @@ public class TabList extends AbstractComponent {
         this.isCustomTextEnabled = setting.isCustomTextEnabled();
         this.tabListText = setting.getTabListText();
         this.displayMode = setting.getTabDisplayMode();
-        this.proxyServer.getScheduler().buildTask(this, this::pingUpdate)
-                .repeat(50L, TimeUnit.MILLISECONDS).schedule();
     }
 
     // listener of player login

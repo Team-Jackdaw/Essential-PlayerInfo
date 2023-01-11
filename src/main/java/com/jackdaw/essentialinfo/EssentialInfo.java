@@ -58,7 +58,10 @@ public class EssentialInfo {
         }
 
         if (setting.isTabListEnabled()) {
-            this.moduleOn(injector.getInstance(TabList.class), "Main: Loaded TabList.");
+            TabList tabList = injector.getInstance(TabList.class);
+            this.moduleOn(tabList, "Main: Loaded TabList.");
+            this.proxyServer.getScheduler().buildTask(this, tabList::pingUpdate)
+                .repeat(50L, java.util.concurrent.TimeUnit.MILLISECONDS).schedule();
         }
 
         if (setting.isMessageEnabled()) {
