@@ -1,19 +1,22 @@
 package com.jackdaw.essentialinfo.module.pinglist;
 
 import com.google.inject.Inject;
+import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.VelocityDataDir;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerPing;
+import org.slf4j.Logger;
 
-public class PingList {
-    // class server
-    private final ProxyServer proxyServer;
+import java.nio.file.Path;
 
-    // connect the module to the plugin and server
+public class PingList extends AbstractComponent {
+
     @Inject
-    public PingList(ProxyServer proxyServer) {
-        this.proxyServer = proxyServer;
+    public PingList(ProxyServer proxyServer, Logger logger, @VelocityDataDir Path velocityDataDir, SettingManager setting) {
+        super(proxyServer, logger, velocityDataDir, setting);
     }
 
     // listener of player ping

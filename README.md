@@ -4,7 +4,7 @@
 
 This is a very lightweight plugin for Velocity proxy.
 
-Used API of Velocity 3.1.0, so it may only support Velocity version 3.1.0 and above, and other versions have not been tested.
+Used API of Velocity 3.1.1, so it may only support Velocity version 3.1.1 or above, and other versions have not been tested.
 
 ## Core Features
 
@@ -18,6 +18,8 @@ Display the player ID on the Minecraft server list.
 
 Show global players on the TabList.
 
+You can now customize the display mode and display message of global players. (see config)
+
 ![TabList1.png][2]
 
 **Global Chat & ConnectionTips**
@@ -26,13 +28,32 @@ The most basic cross-server chat function. & Simple connection tips.
 
 ![customText1.png][3]
 
+**Remember my initial connecting server**
+
+You can now let your players set the initial connecting server as they like. The default setting is "remember their last connected server".
+
+Players can use command to set the mode and server.
+
+- Set default mode
+  - Description: If set to `preset`, players will connect to a specific server every time when they connect to the
+    proxy. This initial server can be set by another command. If set to `last`, players will connect to the server they
+    last exit.
+  - Usage: `/remember mode <last, preset>`
+  - Default: `last`
+
+
+- Set initial server
+  - Description: Only work if the default mode is `preset`. Set the initial connecting server.
+  - Usage: `/remember server <servername>`
+  - Default: `null` (If null, players will connect to the default server of the proxy)
+    
 ## Optional Features
 
 **Customize your message text**
 
 You can change the custom text in the config file. You can use &-codes to color the message.
 
-You can use %player% %server% and %previousServer% to replace the variable.
+You can use `%player%` `%server%` and `%previousServer%` to replace the variable.
 
 **Command-to-broadcast**
 
@@ -42,47 +63,58 @@ is "#".
 
 ## Config
 
+**Notes**
+
+ If you update from an old version, your config file will be recreated, and your setting will be reset to default.
+
+ You can now disable any custom message by setting a component blank `""`.
+
     # essential-playerinfo
     # Configuration version. !Please do not change this option!
     [version]
-    version="v2.0"
+        version="v3.0"
     
     # Global tablist
     [tabList]
-    enabled=true
+        enabled=true
+        # `0` for survival, `1` for creative, `2` for adventure, `3` for spectator.
+        displayMode=3
     
     # Global massage
     [message]
-    enabled=true
-    command-to-broadcast=false
+        enabled=true
+        command-to-broadcast=false
     
     # Ping List
     [pingList]
-    enabled=true
+        enabled=true
     
     # Connection Tips
     [connectionTips]
-    enabled=true
+        enabled=true
+
+    # Remember me
+    [rememberMe]
+        enable=true
     
     # Custom Message Setting
     [customText]
-    enable=false
-    # e.g. WDRshadow: Connect to [Server1].
-    connectionText = "&7%player%: Connect to [%server%]."
-    # e.g. WDRshadow: [Server1] -> [Server2]
-    serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
-    # e.g. WDRshadow: Exit the servers.
-    disconnectionText = "&7%player%: Exit the servers."
-    # e.g. [Server1] <WDRshadow> Hello World!
-    chatText = "&7[%server%] <%player%> "
+      enable=false
+      connectionText = "&7%player%: Connect to [%server%]."
+      serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
+      isconnectionText = "&7%player%: Exit the servers."
+      chatText = "&7[%server%] <%player%> "
+      tabListText = "[%server%] %player%"
 
 ## To do list
 
-**1. Get the server list and provide a way to click to switch.**
+- [ ] Get the server list and provide a way to click to switch.
 
-**2. Let players customize the default server.**
+- [ ] Add an advance way to customize the messages including some extra feature (By `miniMessage` format).
 
-**3. Add an advance way to customize the messages including some extra feature (By miniMessage format).**
+## Notes
+
+Message authentication has been updated to the new version (1.19 or higher) of Minecraft. To avoid surprises with non-online authentication servers, you can set `enable-secure-profile` to `false` in the `server.properties` of each server.
 
 ## Build
 

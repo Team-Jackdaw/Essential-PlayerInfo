@@ -10,24 +10,20 @@ pmd {
 }
 
 group = 'com.jackdaw'
-version = '2.0.0'
+version = '3.0.1'
 
 repositories {
     mavenCentral()
     maven {
-        name = 'velocitypowered-repo'
-        url = 'https://nexus.velocitypowered.com/repository/maven-public/'
-    }
-    maven {
-        name = "sonatype-oss-snapshots"
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
     }
 }
 
 dependencies {
-    compileOnly 'com.velocitypowered:velocity-api:3.0.0'
-    annotationProcessor 'com.velocitypowered:velocity-api:3.0.0'
-    implementation "net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT"
+    compileOnly 'com.velocitypowered:velocity-api:3.1.1'
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.1'
+    implementation "net.kyori:adventure-api:4.12.0"
 
 }
 

@@ -1,10 +1,15 @@
 package com.jackdaw.essentialinfo;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.jackdaw.essentialinfo.configuration.SettingManager;
+import com.google.inject.Injector;
+import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
+import com.jackdaw.essentialinfo.module.JackdawModule;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
 import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
+import com.jackdaw.essentialinfo.module.rememberMe.RememberMe;
 import com.jackdaw.essentialinfo.module.tablist.TabList;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -26,50 +31,53 @@ import java.nio.file.Path;
 )
 public class EssentialInfo {
 
-    // generate instance server and logger
-    @Inject
+    // Injection done by Velocity
     private final ProxyServer proxyServer;
-    @Inject
-    private final Logger logger;
+    private final Logger logger;                // slf4j Logger
+    private final Path dataDirectory;           // Path of the plugin
 
-    // path of the plugin
-    @Inject
-    private @DataDirectory
-    Path dataDirectory;
+    private final SettingManager setting;
+    private final Injector injector;
 
     // connect to the server and logger
     @Inject
-    public EssentialInfo(ProxyServer proxyServer, Logger logger) {
+    public EssentialInfo(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
         this.proxyServer = proxyServer;
         this.logger = logger;
+        this.dataDirectory = dataDirectory;
+        this.setting = getSettingManager();
+        this.injector = Guice.createInjector(new JackdawModule(proxyServer, logger, dataDirectory, this.setting));
     }
-
 
     // register the listeners
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        // get config
-        SettingManager setting = getSettingManager();
-        if (setting == null) return;
+        if (setting == null) {
+            logger.error("Main: Can't load config file.");
+            return;
+        }
+
         if (setting.isTabListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new TabList(this.proxyServer, this, logger));
-            logger.info("Loaded TabList.");
+            TabList tabList = injector.getInstance(TabList.class);
+            this.moduleOn(tabList, "Main: Loaded TabList.");
+            this.proxyServer.getScheduler().buildTask(this, tabList::pingUpdate)
+                .repeat(50L, java.util.concurrent.TimeUnit.MILLISECONDS).schedule();
         }
 
         if (setting.isMessageEnabled()) {
-            this.proxyServer.getEventManager().register(
-                    this, new Message(this.proxyServer, logger, setting));
-            logger.info("Loaded Message.");
+            this.moduleOn(injector.getInstance(Message.class), "Main: Loaded Message.");
         }
 
         if (setting.isPingListEnabled()) {
-            this.proxyServer.getEventManager().register(this, new PingList(this.proxyServer));
-            logger.info("Loaded PingList.");
+            this.moduleOn(injector.getInstance(PingList.class), "Main: Loaded PingList.");
         }
 
         if (setting.isConnectionTipsEnabled()) {
-            this.proxyServer.getEventManager().register(this, new ConnectionTips(this.proxyServer, setting));
-            logger.info("Loaded ConnectionTips.");
+            this.moduleOn(injector.getInstance(ConnectionTips.class), "Main: Loaded ConnectionTips.");
+        }
+
+        if (setting.isRememberMeEnabled()) {
+            this.moduleOn(injector.getInstance(RememberMe.class), "Main: Loaded RememberMe.");
         }
     }
 
@@ -84,5 +92,11 @@ public class EssentialInfo {
         }
         return setting;
     }
+
+    private void moduleOn(AbstractComponent module, String log){
+        this.proxyServer.getEventManager().register(this, module);
+        this.logger.info(log);
+    }
+
 }
 
