@@ -1,12 +1,12 @@
 package com.jackdaw.essentialinfo.auxiliary.userInfo;
 
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.DumperOptions.FlowStyle;
 
 public final class YamlUtils {
     public YamlUtils() {
