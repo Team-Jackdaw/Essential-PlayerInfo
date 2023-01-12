@@ -121,7 +121,7 @@ public class TabList extends AbstractComponent {
         } else {
             displayMessage = "[" + serverName + "] " + fromPlayer.getUsername();
         }
-        return Deserializer.deserialize(displayMessage);
+        return Deserializer.miniMessage(displayMessage);
     }
 
     // normal pingUpdate, public method used for registering the scheduler in plugin. Need to improve!

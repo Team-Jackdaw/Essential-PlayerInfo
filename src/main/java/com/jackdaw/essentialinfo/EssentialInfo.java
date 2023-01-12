@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
+import com.jackdaw.essentialinfo.module.connectMessage.ConnectionMessage;
 import com.jackdaw.essentialinfo.module.AbstractComponent;
 import com.jackdaw.essentialinfo.module.JackdawModule;
 import com.jackdaw.essentialinfo.module.connectionTips.ConnectionTips;
@@ -78,6 +79,10 @@ public class EssentialInfo {
 
         if (setting.isRememberMeEnabled()) {
             this.moduleOn(injector.getInstance(RememberMe.class), "Main: Loaded RememberMe.");
+        }
+
+        if (setting.isConnectionMessageEnabled()) {
+            this.moduleOn(injector.getInstance(ConnectionMessage.class), "Main: Loaded ConnectionMessage.");
         }
     }
 

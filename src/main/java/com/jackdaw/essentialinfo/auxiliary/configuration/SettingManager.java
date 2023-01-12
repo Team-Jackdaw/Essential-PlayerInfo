@@ -15,14 +15,15 @@ import java.nio.file.Files;
  * Configure the setting if a specific module is enable or disable.
  *
  * @author WDRshadow, Lokeyli
- * @version v3.1
+ * @version v3.2
  */
 public class SettingManager {
     private final Logger logger;
     private final File workingDirectory;
     private final File configFile;
 
-    private static final String lastVersion = "v3.1"; // use for confirming the setting version is the same with the plugin
+    // use for confirming the setting version is the same with the plugin
+    private static final String lastVersion = "v3.2";
 
     private boolean tabListEnabled;
     private int displayMode;
@@ -32,11 +33,14 @@ public class SettingManager {
     private boolean commandToBroadcastEnabled;
     private boolean customTextEnabled;
     private boolean rememberMeEnabled;
+    private boolean connectionMessageEnabled;
+    private String serverName;
     private String connectionText;
     private String serverChangeText;
     private String disconnectionText;
     private String chatText;
     private String tabListText;
+    private String connectionMessageText;
 
     /**
      * Instantiates a new Setting manager.
@@ -63,11 +67,14 @@ public class SettingManager {
         this.connectionTipsEnabled = toml.getBoolean("connectionTips.enabled");
         this.customTextEnabled = toml.getBoolean("customText.enabled");
         this.rememberMeEnabled = toml.getBoolean("rememberMe.enabled");
+        this.connectionMessageEnabled = toml.getBoolean("connectMessage.enabled");
+        this.serverName = toml.getString("connectMessage.serverName");
         this.connectionText = toml.getString("customText.connectionText");
         this.serverChangeText = toml.getString("customText.serverChangeText");
         this.disconnectionText = toml.getString("customText.disconnectionText");
         this.chatText = toml.getString("customText.chatText");
         this.tabListText = toml.getString("customText.tabListText");
+        this.connectionMessageText = toml.getString("customText.connectionMessageText");
     }
 
     private void saveDefaultConfig() throws IOException {
@@ -172,6 +179,15 @@ public class SettingManager {
     }
 
     /**
+     * Is Connection message enabled.
+     *
+     * @return the boolean, i.e. enabled returns true; otherwise, false.
+     */
+    public boolean isConnectionMessageEnabled() {
+        return connectionMessageEnabled;
+    }
+
+    /**
      * Get Connection Text
      *
      * @return the String.
@@ -214,5 +230,24 @@ public class SettingManager {
      */
     public String getTabListText() {
         return tabListText;
+    }
+
+
+    /**
+     * Get Connect Message Text.
+     *
+     * @return the String.
+     */
+    public String getConnectionMessageText() {
+        return connectionMessageText;
+    }
+
+    /**
+     * Get Server name.
+     *
+     * @return the String.
+     */
+    public String getServerName() {
+        return serverName;
     }
 }
