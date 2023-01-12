@@ -59,15 +59,25 @@ public class Message extends AbstractComponent {
                 if (this.chatText.isEmpty()) return;
                 sendMessage = this.chatText.replace("%player%", playerName).replace("%server%", server) + message;
             } else {
-                sendMessage = "&7[" + server + "] <" + playerName + "> " + message;
+                // "<gray><u><click:run_command:'/server %server%'><hover:show_text:'Click to switch.'>[%server%]</hover></click></u> <%player%> "
+                sendMessage = String.join(""
+                        , "<gray><u><click:run_command:'/server "
+                        , server
+                        , "'><hover:show_text:'Click to switch.'>["
+                        , server
+                        , "]</hover></click></u> <"
+                        , playerName
+                        , "> "
+                        , message
+                );
             }
         } else {
-            sendMessage = "&7<" + player.getUsername() + "> " + message;
+            sendMessage = "<" + player.getUsername() + "> " + message;
         }
         // send message to other server
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
             if (!Objects.equals(s, player.getCurrentServer().get().getServer())) {
-                s.sendMessage(Deserializer.deserialize(sendMessage));
+                s.sendMessage(Deserializer.miniMessage(sendMessage));
             }
         }
     }

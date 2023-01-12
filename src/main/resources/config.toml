@@ -1,7 +1,7 @@
 # essential-playerinfo
 # Configuration version. !Please do not change this option!
 [version]
-    version="v3.1"
+    version = "v3.2"
 
 # Global tablist
 [tabList]
@@ -15,21 +15,29 @@
 
 # Ping List
 [pingList]
-    enabled=true
+    enabled = true
 
 # Connection Tips
 [connectionTips]
-    enabled=true
+    enabled = true
 
 # Remember me
 [rememberMe]
-    enabled=true
+    enabled = true
+
+# Connection Message
+[connectMessage]
+    enabled = true
+    serverName = "Example Server"
 
 # Custom Message Setting
 [customText]
     enabled = false
-    connectionText = "&7%player%: Connect to [%server%]."
-    serverChangeText = "&7%player%: [%previousServer%] -> [%server%]"
-    disconnectionText = "&7%player%: Exit the servers."
-    chatText = "&7[%server%] <%player%> "
+    # All custom text need to be in the miniMessage format in version v3.1.0 (Config file version v3.2) or higher.
+    # You can use MiniMessage Viewer to preview your text. https://webui.adventure.kyori.net/
+    connectionText = "<gray>%player%: Connect to <u><hover:show_text:'Click to switch.'><click:run_command:'/server %server%'>[%server%]</click></hover></u>.</gray>"
+    serverChangeText = "<gray>%player%: <u><click:run_command:'/server %previousServer%'><hover:show_text:'Click to switch.'>[%previousServer%]</hover></click></u> -> <u><click:run_command:'/server %server%'><hover:show_text:'Click to switch.'>[%server%]</hover></click></u></gray>"
+    disconnectionText = "<gray>%player%: Exit the servers.</gray>"
+    chatText = "<gray><u><click:run_command:'/server %server%'><hover:show_text:'Click to switch.'>[%server%]</hover></click></u> <%player%> "
     tabListText = "[%server%] %player%"
+    connectionMessageText = "<yellow>-------------------------------\nWelcome to %serverName%!\n-------------------------------\nYou can click the servers below to change your connecting server.\n%serverList%\n-------------------------------\nYou can use <u><light_purple><click:run_command:'/remember'><hover:show_text:'Click to run command'>/remember</hover></click></light_purple></u> to set your default connecting server.\n-------------------------------</yellow>"

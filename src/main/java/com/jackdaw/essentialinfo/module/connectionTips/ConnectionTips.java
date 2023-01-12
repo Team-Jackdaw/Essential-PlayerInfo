@@ -56,20 +56,42 @@ public class ConnectionTips extends AbstractComponent {
                 if (serverChangeText.isEmpty()) return;
                 sendMessage = this.serverChangeText.replace("%player%", playerName).replace("%previousServer%", previousServer).replace("%server%", server);
             } else {
-                sendMessage = "&7" + playerName + ": [" + previousServer + "] -> [" + server + "]";
+                // "<gray>%player%: <u><click:run_command:'/server %previousServer%'><hover:show_text:'Click to switch.'>[%previousServer%]</hover></click></u> -> <u><click:run_command:'/server %server%'><hover:show_text:'Click to switch.'>[%server%]</hover></click></u></gray>"
+                sendMessage = String.join(""
+                        , "<gray>"
+                        , playerName
+                        , ": <u><click:run_command:'/server "
+                        , previousServer
+                        , "'><hover:show_text:'Click to switch.'>["
+                        , previousServer
+                        , "]</hover></click></u> -> <u><click:run_command:'/server "
+                        , server
+                        , "'><hover:show_text:'Click to switch.'>["
+                        , server
+                        , "]</hover></click></u></gray>"
+                );
             }
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
-                s.sendMessage(Deserializer.deserialize(sendMessage));
+                s.sendMessage(Deserializer.miniMessage(sendMessage));
             }
         } else {
             if (isCustomTextEnabled) {
                 if (connectionText.isEmpty()) return;
                 sendMessage = this.connectionText.replace("%player%", playerName).replace("%server%", server);
             } else {
-                sendMessage = "&7" + playerName + ": Connected to [" + server + "].";
+                // "<gray>%player%: Connect to <u><hover:show_text:'Click to switch.'><click:run_command:'/server %server%'>[%server%]</click></hover></u>.</gray>"
+                sendMessage = String.join(""
+                        , "<gray>"
+                        , playerName
+                        , ": Connect to <u><hover:show_text:'Click to switch.'><click:run_command:'/server "
+                        , server
+                        , "'>["
+                        , server
+                        , "]</click></hover></u>.</gray>"
+                );
             }
             for (RegisteredServer s : this.proxyServer.getAllServers()) {
-                s.sendMessage(Deserializer.deserialize(sendMessage));
+                s.sendMessage(Deserializer.miniMessage(sendMessage));
             }
         }
     }
@@ -82,10 +104,15 @@ public class ConnectionTips extends AbstractComponent {
             if (disconnectionText.isEmpty()) return;
             sendMessage = this.disconnectionText.replace("%player%", playerName);
         } else {
-            sendMessage = "&7" + playerName + ": Exited the servers.";
+            // "<gray>%player%: Exit the servers.</gray>"
+            sendMessage = String.join(""
+                    , "<gray>"
+                    , playerName
+                    , ": Exit the servers.</gray>"
+            );
         }
         for (RegisteredServer s : this.proxyServer.getAllServers()) {
-            s.sendMessage(Deserializer.deserialize(sendMessage));
+            s.sendMessage(Deserializer.miniMessage(sendMessage));
         }
     }
 }
