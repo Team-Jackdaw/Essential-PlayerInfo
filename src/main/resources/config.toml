@@ -1,7 +1,7 @@
 # essential-playerinfo
 # Configuration version. !Please do not change this option!
 [version]
-    version = "v3.2"
+    version = "v3.3"
 
 # Global tablist
 [tabList]
@@ -29,6 +29,10 @@
 [connectMessage]
     enabled = true
     serverName = "Example Server"
+
+# White List
+[whiteList]
+    enabled = true
 
 # Custom Message Setting
 [customText]

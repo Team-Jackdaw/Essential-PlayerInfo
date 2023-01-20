@@ -1,7 +1,10 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
+import com.google.inject.Inject;
+import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.auxiliary.serializer.Deserializer;
 import com.jackdaw.essentialinfo.auxiliary.userInfo.UserInfoManager;
+import com.jackdaw.essentialinfo.module.AbstractComponent;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
@@ -12,20 +15,19 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public final class CommandSet implements SimpleCommand {
+public final class CommandSet extends AbstractComponent implements SimpleCommand {
 
-    private final ProxyServer proxyServer;
-    private final Logger logger;
     private final File workingDirectory;
 
-    public CommandSet(ProxyServer proxyServer, Logger logger, File workingDirectory) {
-        this.proxyServer = proxyServer;
-        this.logger = logger;
-        this.workingDirectory = workingDirectory;
+    @Inject
+    public CommandSet(ProxyServer proxyServer, Logger logger, Path velocityDataDir, SettingManager setting) {
+        super(proxyServer, logger, velocityDataDir, setting);
+        this.workingDirectory = new File(velocityDataDir.toFile(), "user");
     }
 
     @Override

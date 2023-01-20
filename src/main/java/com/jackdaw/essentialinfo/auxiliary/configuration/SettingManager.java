@@ -34,6 +34,7 @@ public class SettingManager {
     private boolean customTextEnabled;
     private boolean rememberMeEnabled;
     private boolean connectionMessageEnabled;
+    private boolean whiteListEnabled;
     private String serverName;
     private String connectionText;
     private String serverChangeText;
@@ -68,6 +69,7 @@ public class SettingManager {
         this.customTextEnabled = toml.getBoolean("customText.enabled");
         this.rememberMeEnabled = toml.getBoolean("rememberMe.enabled");
         this.connectionMessageEnabled = toml.getBoolean("connectMessage.enabled");
+        this.whiteListEnabled = toml.getBoolean("whiteList.enabled");
         this.serverName = toml.getString("connectMessage.serverName");
         this.connectionText = toml.getString("customText.connectionText");
         this.serverChangeText = toml.getString("customText.serverChangeText");
@@ -185,6 +187,15 @@ public class SettingManager {
      */
     public boolean isConnectionMessageEnabled() {
         return connectionMessageEnabled;
+    }
+
+    /**
+     * Is White list enabled.
+     *
+     * @return the boolean, i.e. enabled returns true; otherwise, false.
+     */
+    public boolean isWhiteListEnabled() {
+        return whiteListEnabled;
     }
 
     /**

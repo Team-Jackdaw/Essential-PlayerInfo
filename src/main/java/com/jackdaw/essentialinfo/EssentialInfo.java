@@ -12,6 +12,7 @@ import com.jackdaw.essentialinfo.module.message.Message;
 import com.jackdaw.essentialinfo.module.pinglist.PingList;
 import com.jackdaw.essentialinfo.module.rememberMe.RememberMe;
 import com.jackdaw.essentialinfo.module.tablist.TabList;
+import com.jackdaw.essentialinfo.module.whiteList.WhiteList;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -83,6 +84,10 @@ public class EssentialInfo {
 
         if (setting.isConnectionMessageEnabled()) {
             this.moduleOn(injector.getInstance(ConnectionMessage.class), "Main: Loaded ConnectionMessage.");
+        }
+
+        if (setting.isWhiteListEnabled()) {
+            this.moduleOn(injector.getInstance(WhiteList.class), "Main: Loaded WhiteList.");
         }
     }
 

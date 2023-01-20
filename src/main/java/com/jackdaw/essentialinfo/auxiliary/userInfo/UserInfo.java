@@ -1,10 +1,14 @@
 package com.jackdaw.essentialinfo.auxiliary.userInfo;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UserInfo {
     private final String name;
     private final String uuid;
     private String defaultMode;
     private String server;
+    private List<String> whiteList;
 
     /**
      * A user's information class. To initialize the class, you need the parameters below.
@@ -14,11 +18,12 @@ public class UserInfo {
      * @param defaultMode User's default mode.
      * @param server      User's default server.
      */
-    public UserInfo(String name, String uuid, String defaultMode, String server) {
+    public UserInfo(String name, String uuid, String defaultMode, String server, List<String> whiteList) {
         this.name = name;
         this.uuid = uuid;
         this.defaultMode = defaultMode;
         this.server = server;
+        this.whiteList = whiteList;
     }
 
     /**
@@ -58,6 +63,15 @@ public class UserInfo {
     }
 
     /**
+     * Get the white list from the data file.
+     *
+     * @return the List of white list, i.e. the server list.
+     */
+    public List<String> getWhiteList() {
+        return whiteList;
+    }
+
+    /**
      * Set the remembered mode of player from the data file.
      */
     public void setDefaultMode(String defaultMode) {
@@ -69,5 +83,27 @@ public class UserInfo {
      */
     public void setServer(String server) {
         this.server = server;
+    }
+
+    /**
+     * Add a server on the list.
+     */
+    public void addWhiteList(String server) {
+        if (this.whiteList.stream().anyMatch(w -> w.equals(server))) return;
+        this.whiteList.add(server);
+    }
+
+    /**
+     * Remove a server on the list.
+     */
+    public void removeWhiteList(String server) {
+        this.whiteList.remove(whiteList.stream().filter(w -> w.equals(server)).findFirst().orElse(null));
+    }
+
+    /**
+     * Set servers on the list.
+     */
+    public void setWhiteList(List<String> serverList) {
+        this.whiteList = serverList;
     }
 }

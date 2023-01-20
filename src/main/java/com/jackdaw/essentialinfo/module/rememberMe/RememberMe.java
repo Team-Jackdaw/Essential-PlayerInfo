@@ -1,6 +1,7 @@
 package com.jackdaw.essentialinfo.module.rememberMe;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.jackdaw.essentialinfo.auxiliary.configuration.SettingManager;
 import com.jackdaw.essentialinfo.auxiliary.userInfo.UserInfoManager;
 import com.jackdaw.essentialinfo.module.AbstractComponent;
@@ -25,24 +26,14 @@ public class RememberMe extends AbstractComponent {
     public RememberMe(ProxyServer proxyServer, Logger logger, @VelocityDataDir Path velocityDataDir, SettingManager setting) {
         super(proxyServer, logger, velocityDataDir, setting);
         this.workingDirectory = new File(velocityDataDir.toFile(), "user");
-        checkFolder();
         commandSet();
-    }
-
-    // check whether the /user folder is existed.
-    private void checkFolder(){
-        if(!workingDirectory.exists()){
-            if(!workingDirectory.mkdir()){
-                logger.error("RememberMe: Can't make a new folder.");
-            }
-        }
     }
 
     //command manager, register the command "remember".
     private void commandSet() {
         CommandManager commandManager = proxyServer.getCommandManager();
         CommandMeta commandMeta = commandManager.metaBuilder("remember").build();
-        CommandSet commandSet = new CommandSet(proxyServer, logger, workingDirectory);
+        CommandSet commandSet = Injector.;
         commandManager.register(commandMeta, commandSet);
     }
 
